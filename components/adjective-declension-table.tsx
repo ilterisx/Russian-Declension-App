@@ -101,7 +101,7 @@ const examples = {
 
 export default function AdjectiveDeclensionTable() {
   const [selectedGender, setSelectedGender] = useState<"masculine" | "feminine" | "neuter">("masculine")
-  const [showExamples, setShowExamples] = useState(true)
+  const [showExamples, setShowExamples] = useState(false)
   const [hiddenEndings, setHiddenEndings] = useState<Record<string, boolean>>({})
 
   const cases = ["nominative", "genitive", "dative", "accusative", "instrumental", "prepositional"]
@@ -115,21 +115,31 @@ export default function AdjectiveDeclensionTable() {
   }
 
   const toggleEndingVisibility = (caseType: string, number: "singular" | "plural") => {
-    setHiddenEndings((prev) => ({
-      ...prev,
-      [`${caseType}_${number}`]: !prev[`${caseType}_${number}`],
-    }))
+    const key = `${caseType}_${number}`
+
+    setHiddenEndings((prev) => {
+      // If the ending is currently hidden, show it
+      if (prev[key]) {
+        const newState = { ...prev }
+        delete newState[key]
+        return newState
+      }
+      // If the ending is currently visible, hide it
+      else {
+        return {
+          ...prev,
+          [key]: true,
+        }
+      }
+    })
   }
 
   const renderAccusativeCase = (number: "singular" | "plural", gender: "masculine" | "feminine" | "neuter" | "all") => {
-    if (hiddenEndings[`accusative_${number}`]) {
+    const key = `accusative_${number}`
+
+    if (hiddenEndings[key]) {
       return (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => toggleEndingVisibility("accusative", number)}
-          className="h-6 text-xs"
-        >
+        <Button variant="ghost" size="sm" className="h-6 text-xs">
           <Eye size={14} className="mr-1" /> Show
         </Button>
       )
@@ -174,14 +184,11 @@ export default function AdjectiveDeclensionTable() {
     gender: "masculine" | "feminine" | "neuter" | "all",
     caseType: string,
   ) => {
-    if (hiddenEndings[`${caseType}_${number}`]) {
+    const key = `${caseType}_${number}`
+
+    if (hiddenEndings[key]) {
       return (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => toggleEndingVisibility(caseType, number)}
-          className="h-6 text-xs"
-        >
+        <Button variant="ghost" size="sm" className="h-6 text-xs">
           <Eye size={14} className="mr-1" /> Show
         </Button>
       )
@@ -279,12 +286,12 @@ export default function AdjectiveDeclensionTable() {
                   {caseTranslations[caseType as keyof typeof caseTranslations]}
                   <div className="text-xs text-muted-foreground">{caseType}</div>
                 </TableCell>
-                <TableCell>
+                <TableCell onClick={() => toggleEndingVisibility(caseType, "singular")}>
                   {caseType === "accusative"
                     ? renderAccusativeCase("singular", selectedGender)
                     : renderNormalCase("singular", selectedGender, caseType)}
                 </TableCell>
-                <TableCell>
+                <TableCell onClick={() => toggleEndingVisibility(caseType, "plural")}>
                   {caseType === "accusative"
                     ? renderAccusativeCase("plural", "all")
                     : renderNormalCase("plural", "all", caseType)}

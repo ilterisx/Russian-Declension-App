@@ -1,86 +1,72 @@
 "use client"
 
-import { useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { BookOpen, Brain, Github } from "lucide-react"
+import { Github } from "lucide-react"
 import NounDeclensionTable from "@/components/noun-declension-table"
 import AdjectiveDeclensionTable from "@/components/adjective-declension-table"
-import QuizMode from "@/components/quiz-mode"
+import PronounDeclensionTable from "@/components/pronoun-declension-table"
 
 export default function Home() {
-  const [showQuiz, setShowQuiz] = useState(false)
-
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <div className="container mx-auto py-8 px-4">
         <header className="mb-8 text-center">
           <h1 className="text-3xl md:text-4xl font-bold mb-2 text-slate-900 dark:text-slate-50">
-            Russian Declension Memorization
+            Russian Declensions 
           </h1>
           <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-            last update: 16/03/2025, contact: <a href="mailto:ilterisch@yandex.ru">ilterisch@yandex.ru</a>
+            last update: 19/03/2025, contact: <a href="mailto:ilterisch@yandex.ru">ilterisch@yandex.ru</a>
           </p>
         </header>
 
-        <div className="flex items-center justify-center mb-6 gap-2">
-          <Button variant={!showQuiz ? "default" : "outline"} onClick={() => setShowQuiz(false)} className="gap-2">
-            <BookOpen size={18} />
-            Study Mode
-          </Button>
-          <Button variant={showQuiz ? "default" : "outline"} onClick={() => setShowQuiz(true)} className="gap-2">
-            <Brain size={18} />
-            Quiz Mode
-          </Button>
-        </div>
+        <Tabs defaultValue="nouns" className="max-w-4xl mx-auto">
+          <TabsList className="grid w-full grid-cols-3 mb-8">
+            <TabsTrigger value="nouns">Noun Endings</TabsTrigger>
+            <TabsTrigger value="adjectives">Adjective Endings</TabsTrigger>
+            <TabsTrigger value="pronouns">Pronouns</TabsTrigger>
+          </TabsList>
 
-        {!showQuiz ? (
-          <Tabs defaultValue="nouns" className="max-w-4xl mx-auto">
-            <TabsList className="grid w-full grid-cols-2 mb-8">
-              <TabsTrigger value="nouns">Noun Endings</TabsTrigger>
-              <TabsTrigger value="adjectives">Adjective Endings</TabsTrigger>
-            </TabsList>
+          <TabsContent value="nouns" className="mt-0">
+            <Card>
+              <CardHeader>
+                <CardTitle>Russian Noun Declension Endings</CardTitle>
+                <CardDescription>Reference for endings across all 6 cases and different genders</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <NounDeclensionTable />
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-            <TabsContent value="nouns" className="mt-0">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Russian Noun Declension Endings</CardTitle>
-                  <CardDescription>Memorize the endings for all 6 cases across different genders</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <NounDeclensionTable />
-                </CardContent>
-              </Card>
-            </TabsContent>
+          <TabsContent value="adjectives" className="mt-0">
+            <Card>
+              <CardHeader>
+                <CardTitle>Russian Adjective Declension Endings</CardTitle>
+                <CardDescription>
+                  Reference for adjective endings across all 6 cases and different genders
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <AdjectiveDeclensionTable />
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-            <TabsContent value="adjectives" className="mt-0">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Russian Adjective Declension Endings</CardTitle>
-                  <CardDescription>
-                    Memorize the adjective endings for all 6 cases across different genders
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <AdjectiveDeclensionTable />
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        ) : (
-          <Card className="max-w-4xl mx-auto">
-            <CardHeader>
-              <CardTitle>Test Your Knowledge</CardTitle>
-              <CardDescription>
-                Practice identifying the correct endings for Russian nouns and adjectives
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <QuizMode />
-            </CardContent>
-          </Card>
-        )}
+          <TabsContent value="pronouns" className="mt-0">
+            <Card>
+              <CardHeader>
+                <CardTitle>Russian Pronouns</CardTitle>
+                <CardDescription>
+                  Reference for personal, possessive, demonstrative, interrogative, negative, and reflexive pronouns
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <PronounDeclensionTable />
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
 
         {/* Add GitHub link footer */}
         <footer className="mt-12 text-center">

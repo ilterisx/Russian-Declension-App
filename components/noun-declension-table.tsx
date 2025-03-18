@@ -1,22 +1,23 @@
 "use client"
 
 import { Label } from "@/components/ui/label"
-
 import { Switch } from "@/components/ui/switch"
-
 import { useState } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Eye } from "lucide-react"
 
-// Russian noun declension data
+// Russian noun declension data with accusative case separated for animate/inanimate
 const nounDeclensions = {
   masculine: {
     singular: {
       nominative: "-∅, -й, -ь",
       genitive: "-а, -я",
       dative: "-у, -ю",
-      accusative: "-∅/а, -й/я, -ь/я",
+      accusative: {
+        inanimate: "-∅, -й, -ь",
+        animate: "-а, -я, -я",
+      },
       instrumental: "-ом, -ем, -ём",
       prepositional: "-е, -и",
     },
@@ -24,7 +25,10 @@ const nounDeclensions = {
       nominative: "-ы, -и",
       genitive: "-ов, -ев, -ёв, -ей, -∅",
       dative: "-ам, -ям",
-      accusative: "-ы/ов, -и/ей",
+      accusative: {
+        inanimate: "-ы, -и",
+        animate: "-ов, -ев, -ей",
+      },
       instrumental: "-ами, -ями",
       prepositional: "-ах, -ях",
     },
@@ -34,7 +38,10 @@ const nounDeclensions = {
       nominative: "-а, -я, -ь",
       genitive: "-ы, -и",
       dative: "-е, -и",
-      accusative: "-у, -ю, -ь",
+      accusative: {
+        inanimate: "-у, -ю, -ь",
+        animate: "-у, -ю, -ь",
+      },
       instrumental: "-ой, -ей, -ёй, -ью",
       prepositional: "-е, -и",
     },
@@ -42,7 +49,10 @@ const nounDeclensions = {
       nominative: "-ы, -и",
       genitive: "-∅, -ей",
       dative: "-ам, -ям",
-      accusative: "-ы, -и, -ей",
+      accusative: {
+        inanimate: "-ы, -и",
+        animate: "-∅, -ей",
+      },
       instrumental: "-ами, -ями",
       prepositional: "-ах, -ях",
     },
@@ -52,7 +62,10 @@ const nounDeclensions = {
       nominative: "-о, -е",
       genitive: "-а, -я",
       dative: "-у, -ю",
-      accusative: "-о, -е",
+      accusative: {
+        inanimate: "-о, -е",
+        animate: "-о, -е",
+      },
       instrumental: "-ом, -ем",
       prepositional: "-е, -и",
     },
@@ -60,7 +73,10 @@ const nounDeclensions = {
       nominative: "-а, -я",
       genitive: "-∅, -ев, -ей",
       dative: "-ам, -ям",
-      accusative: "-а, -я",
+      accusative: {
+        inanimate: "-а, -я",
+        animate: "-а, -я",
+      },
       instrumental: "-ами, -ями",
       prepositional: "-ах, -ях",
     },
@@ -74,7 +90,10 @@ const examples = {
       nominative: "стол, музей, словарь",
       genitive: "стола, музея",
       dative: "столу, музею",
-      accusative: "стол/человека, музей/героя",
+      accusative: {
+        inanimate: "стол, музей, словарь",
+        animate: "человека, героя, коня",
+      },
       instrumental: "столом, музеем",
       prepositional: "столе, музее",
     },
@@ -82,7 +101,10 @@ const examples = {
       nominative: "столы, музеи",
       genitive: "столов, музеев, словарей",
       dative: "столам, музеям",
-      accusative: "столы, музеи",
+      accusative: {
+        inanimate: "столы, музеи",
+        animate: "людей, героев",
+      },
       instrumental: "столами, музеями",
       prepositional: "столах, музеях",
     },
@@ -92,7 +114,10 @@ const examples = {
       nominative: "книга, неделя, дверь",
       genitive: "книги, недели, двери",
       dative: "книге, неделе, двери",
-      accusative: "книгу, неделю, дверь",
+      accusative: {
+        inanimate: "книгу, неделю, дверь",
+        animate: "маму, кошку",
+      },
       instrumental: "книгой, неделей, дверью",
       prepositional: "книге, неделе, двери",
     },
@@ -100,7 +125,10 @@ const examples = {
       nominative: "книги, недели, двери",
       genitive: "книг, недель, дверей",
       dative: "книгам, неделям, дверям",
-      accusative: "книги, недели, двери",
+      accusative: {
+        inanimate: "книги, недели, двери",
+        animate: "мам, кошек",
+      },
       instrumental: "книгами, неделями, дверями",
       prepositional: "книгах, неделях, дверях",
     },
@@ -110,7 +138,10 @@ const examples = {
       nominative: "окно, море",
       genitive: "окна, моря",
       dative: "окну, морю",
-      accusative: "окно, море",
+      accusative: {
+        inanimate: "окно, море",
+        animate: "животное",
+      },
       instrumental: "окном, морем",
       prepositional: "окне, море",
     },
@@ -118,7 +149,10 @@ const examples = {
       nominative: "окна, моря",
       genitive: "окон, морей",
       dative: "окнам, морям",
-      accusative: "окна, моря",
+      accusative: {
+        inanimate: "окна, моря",
+        animate: "животные",
+      },
       instrumental: "окнами, морями",
       prepositional: "окнах, морях",
     },
@@ -127,14 +161,27 @@ const examples = {
 
 export default function NounDeclensionTable() {
   const [selectedGender, setSelectedGender] = useState<"masculine" | "feminine" | "neuter">("masculine")
-  const [showExamples, setShowExamples] = useState(true)
+  const [showExamples, setShowExamples] = useState(false)
   const [hiddenEndings, setHiddenEndings] = useState<Record<string, boolean>>({})
 
   const toggleEndingVisibility = (caseType: string, number: "singular" | "plural") => {
-    setHiddenEndings((prev) => ({
-      ...prev,
-      [`${caseType}_${number}`]: !prev[`${caseType}_${number}`],
-    }))
+    const key = `${caseType}_${number}`
+
+    setHiddenEndings((prev) => {
+      // If the ending is currently hidden, show it
+      if (prev[key]) {
+        const newState = { ...prev }
+        delete newState[key]
+        return newState
+      }
+      // If the ending is currently visible, hide it
+      else {
+        return {
+          ...prev,
+          [key]: true,
+        }
+      }
+    })
   }
 
   const cases = ["nominative", "genitive", "dative", "accusative", "instrumental", "prepositional"]
@@ -145,6 +192,82 @@ export default function NounDeclensionTable() {
     accusative: "Винительный",
     instrumental: "Творительный",
     prepositional: "Предложный",
+  }
+
+  const renderAccusativeCase = (number: "singular" | "plural", gender: "masculine" | "feminine" | "neuter") => {
+    const key = `accusative_${number}`
+
+    if (hiddenEndings[key]) {
+      return (
+        <Button variant="ghost" size="sm" className="h-6 text-xs">
+          <Eye size={14} className="mr-1" /> Show
+        </Button>
+      )
+    }
+
+    const data =
+      number === "singular" ? nounDeclensions[gender].singular.accusative : nounDeclensions[gender].plural.accusative
+
+    const exampleData =
+      number === "singular" ? examples[gender].singular.accusative : examples[gender].plural.accusative
+
+    return (
+      <>
+        <div>
+          <div className="text-sm font-medium">Inanimate:</div>
+          <div className="font-medium">{typeof data === "object" ? data.inanimate : data}</div>
+          {showExamples && (
+            <div className="text-sm text-muted-foreground mt-1">
+              {typeof exampleData === "object" ? exampleData.inanimate : ""}
+            </div>
+          )}
+        </div>
+        <div className="mt-2">
+          <div className="text-sm font-medium">Animate:</div>
+          <div className="font-medium">{typeof data === "object" ? data.animate : data}</div>
+          {showExamples && (
+            <div className="text-sm text-muted-foreground mt-1">
+              {typeof exampleData === "object" ? exampleData.animate : ""}
+            </div>
+          )}
+        </div>
+      </>
+    )
+  }
+
+  const renderNormalCase = (
+    number: "singular" | "plural",
+    gender: "masculine" | "feminine" | "neuter",
+    caseType: string,
+  ) => {
+    const key = `${caseType}_${number}`
+
+    if (hiddenEndings[key]) {
+      return (
+        <Button variant="ghost" size="sm" className="h-6 text-xs">
+          <Eye size={14} className="mr-1" /> Show
+        </Button>
+      )
+    }
+
+    const data =
+      number === "singular"
+        ? nounDeclensions[gender].singular[caseType as keyof typeof nounDeclensions.masculine.singular]
+        : nounDeclensions[gender].plural[caseType as keyof typeof nounDeclensions.masculine.plural]
+
+    const exampleData =
+      number === "singular"
+        ? examples[gender].singular[caseType as keyof typeof examples.masculine.singular]
+        : examples[gender].plural[caseType as keyof typeof examples.masculine.plural]
+
+    return (
+      <>
+        <div className="font-medium">{typeof data === "object" ? JSON.stringify(data) : data}</div>
+        {showExamples && (
+          <div className="text-sm text-muted-foreground mt-1">{typeof exampleData === "object" ? "" : exampleData}</div>
+        )}
+      </>
+    )
   }
 
   return (
@@ -215,59 +338,15 @@ export default function NounDeclensionTable() {
                   {caseTranslations[caseType as keyof typeof caseTranslations]}
                   <div className="text-xs text-muted-foreground">{caseType}</div>
                 </TableCell>
-                <TableCell>
-                  {hiddenEndings[`${caseType}_singular`] ? (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => toggleEndingVisibility(caseType, "singular")}
-                      className="h-6 text-xs"
-                    >
-                      <Eye size={14} className="mr-1" /> Show
-                    </Button>
-                  ) : (
-                    <>
-                      <div className="font-medium">
-                        {
-                          nounDeclensions[selectedGender].singular[
-                            caseType as keyof typeof nounDeclensions.masculine.singular
-                          ]
-                        }
-                      </div>
-                      {showExamples && (
-                        <div className="text-sm text-muted-foreground mt-1">
-                          {examples[selectedGender].singular[caseType as keyof typeof examples.masculine.singular]}
-                        </div>
-                      )}
-                    </>
-                  )}
+                <TableCell onClick={() => toggleEndingVisibility(caseType, "singular")}>
+                  {caseType === "accusative"
+                    ? renderAccusativeCase("singular", selectedGender)
+                    : renderNormalCase("singular", selectedGender, caseType)}
                 </TableCell>
-                <TableCell>
-                  {hiddenEndings[`${caseType}_plural`] ? (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => toggleEndingVisibility(caseType, "plural")}
-                      className="h-6 text-xs"
-                    >
-                      <Eye size={14} className="mr-1" /> Show
-                    </Button>
-                  ) : (
-                    <>
-                      <div className="font-medium">
-                        {
-                          nounDeclensions[selectedGender].plural[
-                            caseType as keyof typeof nounDeclensions.masculine.plural
-                          ]
-                        }
-                      </div>
-                      {showExamples && (
-                        <div className="text-sm text-muted-foreground mt-1">
-                          {examples[selectedGender].plural[caseType as keyof typeof examples.masculine.plural]}
-                        </div>
-                      )}
-                    </>
-                  )}
+                <TableCell onClick={() => toggleEndingVisibility(caseType, "plural")}>
+                  {caseType === "accusative"
+                    ? renderAccusativeCase("plural", selectedGender)
+                    : renderNormalCase("plural", selectedGender, caseType)}
                 </TableCell>
               </TableRow>
             ))}
