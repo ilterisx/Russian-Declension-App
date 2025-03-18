@@ -3,10 +3,42 @@
 import { useState } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { Eye } from "lucide-react"
+import { Eye } from 'lucide-react'
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
+
+// Define TypeScript interfaces for our data structures
+interface AccusativeForm {
+  animate: string;
+  inanimate: string;
+}
+
+interface CaseForm {
+  nominative: string;
+  genitive: string;
+  dative: string;
+  accusative: string | AccusativeForm;
+  instrumental: string;
+  prepositional: string;
+}
+
+interface GenderedForm {
+  masculine: CaseForm;
+  feminine: CaseForm;
+  neuter: CaseForm;
+}
+
+interface PersonForm {
+  first: CaseForm;
+  second: CaseForm;
+  third: GenderedForm;
+}
+
+interface NumberForm<T> {
+  singular: T;
+  plural: T;
+}
 
 // Russian personal pronouns data
 const personalPronouns = {
@@ -961,11 +993,11 @@ export default function PronounDeclensionTable() {
                             <>
                               <div>
                                 <div className="text-sm font-medium">Inanimate:</div>
-                                <div className="font-medium">{(pronoun as any).inanimate}</div>
+                                <div className="font-medium">{(pronoun as AccusativeForm).inanimate}</div>
                               </div>
                               <div className="mt-2">
                                 <div className="text-sm font-medium">Animate:</div>
-                                <div className="font-medium">{(pronoun as any).animate}</div>
+                                <div className="font-medium">{(pronoun as AccusativeForm).animate}</div>
                               </div>
                             </>
                           ) : (
@@ -1102,11 +1134,11 @@ export default function PronounDeclensionTable() {
                         <>
                           <div>
                             <div className="text-sm font-medium">Inanimate:</div>
-                            <div className="font-medium">{(pronoun as any).inanimate}</div>
+                            <div className="font-medium">{(pronoun as AccusativeForm).inanimate}</div>
                           </div>
                           <div className="mt-2">
                             <div className="text-sm font-medium">Animate:</div>
-                            <div className="font-medium">{(pronoun as any).animate}</div>
+                            <div className="font-medium">{(pronoun as AccusativeForm).animate}</div>
                           </div>
                         </>
                       ) : (
@@ -1263,11 +1295,11 @@ export default function PronounDeclensionTable() {
                         <>
                           <div>
                             <div className="text-sm font-medium">Inanimate:</div>
-                            <div className="font-medium">{(pronoun as any).inanimate}</div>
+                            <div className="font-medium">{(pronoun as AccusativeForm).inanimate}</div>
                           </div>
                           <div className="mt-2">
                             <div className="text-sm font-medium">Animate:</div>
-                            <div className="font-medium">{(pronoun as any).animate}</div>
+                            <div className="font-medium">{(pronoun as AccusativeForm).animate}</div>
                           </div>
                         </>
                       ) : (
@@ -1506,4 +1538,3 @@ export default function PronounDeclensionTable() {
     </div>
   )
 }
-
