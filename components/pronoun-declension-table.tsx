@@ -14,31 +14,7 @@ interface AccusativeForm {
   inanimate: string;
 }
 
-interface CaseForm {
-  nominative: string;
-  genitive: string;
-  dative: string;
-  accusative: string | AccusativeForm;
-  instrumental: string;
-  prepositional: string;
-}
 
-interface GenderedForm {
-  masculine: CaseForm;
-  feminine: CaseForm;
-  neuter: CaseForm;
-}
-
-interface PersonForm {
-  first: CaseForm;
-  second: CaseForm;
-  third: GenderedForm;
-}
-
-interface NumberForm<T> {
-  singular: T;
-  plural: T;
-}
 
 // Russian personal pronouns data
 const personalPronouns = {
