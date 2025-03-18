@@ -3,18 +3,19 @@
 import { useState } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { Eye } from 'lucide-react'
+import { Eye } from "lucide-react"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 
 // Define TypeScript interfaces for our data structures
 interface AccusativeForm {
-  animate: string;
-  inanimate: string;
+  animate: string
+  inanimate: string
 }
 
-
+// Define a type for pronoun types to avoid using 'any'
+type PronounType = "personal" | "possessive" | "demonstrative" | "interrogative" | "negative" | "reflexive"
 
 // Russian personal pronouns data
 const personalPronouns = {
@@ -636,9 +637,7 @@ const personalPronounExamples = {
 }
 
 export default function PronounDeclensionTable() {
-  const [pronounType, setPronounType] = useState<
-    "personal" | "possessive" | "demonstrative" | "interrogative" | "negative" | "reflexive"
-  >("personal")
+  const [pronounType, setPronounType] = useState<PronounType>("personal")
   const [showExamples, setShowExamples] = useState(false)
   const [hiddenEndings, setHiddenEndings] = useState<Record<string, boolean>>({})
 
@@ -1495,7 +1494,7 @@ export default function PronounDeclensionTable() {
       </div>
 
       {/* Keep the Tabs and TabsContent components for content switching */}
-      <Tabs value={pronounType} onValueChange={(value) => setPronounType(value as any)}>
+      <Tabs value={pronounType} onValueChange={(value) => setPronounType(value as PronounType)}>
         <TabsContent value="personal">{renderPersonalPronounTable()}</TabsContent>
         <TabsContent value="possessive">{renderPossessivePronounTable()}</TabsContent>
         <TabsContent value="demonstrative">{renderDemonstrativePronounTable()}</TabsContent>
@@ -1514,3 +1513,4 @@ export default function PronounDeclensionTable() {
     </div>
   )
 }
+
