@@ -961,7 +961,7 @@ export default function PronounDeclensionTable() {
                             <>
                               <div>
                                 <div className="text-sm font-medium">Inanimate:</div>
-                                <div className="font-medium">{(pronoun as { animate: string, inanimate: string }).inanimate}</div>
+                                <div className="font-medium">{(pronoun as any).inanimate}</div>
                               </div>
                               <div className="mt-2">
                                 <div className="text-sm font-medium">Animate:</div>
