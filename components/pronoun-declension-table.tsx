@@ -3,10 +3,13 @@
 import { useState } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { Eye } from "lucide-react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent } from "@/components/ui/tabs"
+import { Badge } from "@/components/ui/badge"
+import { Eye, EyeOff, ChevronRight, BookOpen, User, Users, Info } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 // Define TypeScript interfaces for our data structures
 interface AccusativeForm {
@@ -25,9 +28,6 @@ type DemonstrativeType = "this" | "that"
 type InterrogativeType = "who" | "what" | "which" | "whose"
 type NegativeType = "nobody" | "nothing" | "no_one_to" | "nothing_to"
 type ReflexiveType = "oneself" | "each_other"
-
-
-
 
 // Russian personal pronouns data
 const personalPronouns = {
@@ -1269,10 +1269,34 @@ const reflexivePronounExamples = {
   },
 }
 
-export default function PronounDeclensionTable() {
+// Translations for case names
+const caseTranslations = {
+  nominative: "Именительный",
+  genitive: "Родительный",
+  dative: "Дательный",
+  accusative: "Винительный",
+  instrumental: "Творительный",
+  prepositional: "Предложный",
+}
+
+// Translations for pronoun types
+const pronounTypeTranslations = {
+  personal: "Личные",
+  possessive: "Притяжательные",
+  demonstrative: "Указательные",
+  interrogative: "Вопросительные",
+  negative: "Отрицательные",
+  reflexive: "Возвратные",
+}
+
+// Component for the pronoun explorer
+export default function PronounExplorer() {
+  // Main state
   const [pronounType, setPronounType] = useState<PronounType>("personal")
   const [showExamples, setShowExamples] = useState(true)
   const [hiddenEndings, setHiddenEndings] = useState<Record<string, boolean>>({})
+  const [searchTerm, setSearchTerm] = useState("")
+  const [testMode, setTestMode] = useState(false)
 
   // For personal pronouns
   const [personNumber, setPersonNumber] = useState<PersonNumber>("singular")
@@ -1301,27 +1325,17 @@ export default function PronounDeclensionTable() {
   const [reflexiveType, setReflexiveType] = useState<ReflexiveType>("oneself")
 
   const cases: Case[] = ["nominative", "genitive", "dative", "accusative", "instrumental", "prepositional"]
-  const caseTranslations = {
-    nominative: "Именительный",
-    genitive: "Родительный",
-    dative: "Дательный",
-    accusative: "Винительный",
-    instrumental: "Творительный",
-    prepositional: "Предложный",
-  }
 
+  // Toggle visibility of endings for test mode
   const toggleEndingVisibility = (caseType: string, type = "default") => {
     const key = `${caseType}_${type}`
 
     setHiddenEndings((prev) => {
-      // If the ending is currently hidden, show it
       if (prev[key]) {
         const newState = { ...prev }
         delete newState[key]
         return newState
-      }
-      // If the ending is currently visible, hide it
-      else {
+      } else {
         return {
           ...prev,
           [key]: true,
@@ -1330,201 +1344,151 @@ export default function PronounDeclensionTable() {
     })
   }
 
+  // Toggle test mode
+  const toggleTestMode = () => {
+    if (!testMode) {
+      // Hide all endings
+      const allHidden: Record<string, boolean> = {}
+      cases.forEach((caseType) => {
+        allHidden[`${caseType}_personal`] = true
+        allHidden[`${caseType}_possessive`] = true
+        allHidden[`${caseType}_demonstrative`] = true
+        allHidden[`${caseType}_interrogative`] = true
+        allHidden[`${caseType}_negative`] = true
+        allHidden[`${caseType}_reflexive`] = true
+      })
+      setHiddenEndings(allHidden)
+    } else {
+      // Show all endings
+      setHiddenEndings({})
+    }
+    setTestMode(!testMode)
+  }
+
+  // Render the personal pronoun table
   const renderPersonalPronounTable = () => {
     return (
       <div className="space-y-6">
-        <div className="flex flex-wrap gap-2 mb-4">
-          <Button
-            variant={personNumber === "singular" ? "default" : "outline"}
-            onClick={() => setPersonNumber("singular")}
-          >
-            Singular
-          </Button>
-          <Button variant={personNumber === "plural" ? "default" : "outline"} onClick={() => setPersonNumber("plural")}>
-            Plural
-          </Button>
-        </div>
-
-        {personNumber === "singular" && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            <Button variant={person === "first" ? "default" : "outline"} onClick={() => setPerson("first")}>
-              1st Person (я)
-            </Button>
-            <Button variant={person === "second" ? "default" : "outline"} onClick={() => setPerson("second")}>
-              2nd Person (ты)
-            </Button>
-            <Button variant={person === "third" ? "default" : "outline"} onClick={() => setPerson("third")}>
-              3rd Person (он/она/оно)
-            </Button>
-          </div>
-        )}
-
-        {personNumber === "singular" && person === "third" && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            <Button
-              variant={thirdPersonGender === "masculine" ? "default" : "outline"}
-              onClick={() => setThirdPersonGender("masculine")}
-            >
-              Masculine (он)
-            </Button>
-            <Button
-              variant={thirdPersonGender === "feminine" ? "default" : "outline"}
-              onClick={() => setThirdPersonGender("feminine")}
-            >
-              Feminine (она)
-            </Button>
-            <Button
-              variant={thirdPersonGender === "neuter" ? "default" : "outline"}
-              onClick={() => setThirdPersonGender("neuter")}
-            >
-              Neuter (оно)
-            </Button>
-          </div>
-        )}
-
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[150px]">Case</TableHead>
-                <TableHead>Pronoun</TableHead>
-                {showExamples && <TableHead>Example</TableHead>}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {cases.map((caseType) => {
-                let pronoun
-                let example
-
-                if (personNumber === "singular") {
-                  if (person === "third") {
-                    pronoun = personalPronouns.singular.third[thirdPersonGender][caseType]
-                    example = personalPronounExamples.singular.third[thirdPersonGender][caseType]
-                  } else {
-                    pronoun = personalPronouns.singular[person][caseType]
-                    example = personalPronounExamples.singular[person][caseType]
-                  }
-                } else {
-                  pronoun = personalPronouns.plural[person][caseType]
-                  example = personalPronounExamples.plural[person][caseType]
-                }
-
-                const key = `${caseType}_personal`
-                return (
-                  <TableRow key={caseType}>
-                    <TableCell className="font-medium">
-                      {caseTranslations[caseType]}
-                      <div className="text-xs text-muted-foreground">{caseType}</div>
-                    </TableCell>
-                    <TableCell onClick={() => toggleEndingVisibility(caseType, "personal")}>
-                      {hiddenEndings[key] ? (
-                        <Button variant="ghost" size="sm" className="h-6 text-xs">
-                          <Eye size={14} className="mr-1" /> Show
-                        </Button>
-                      ) : (
-                        <div className="font-medium">{pronoun}</div>
-                      )}
-                    </TableCell>
-                    {showExamples && (
-                      <TableCell>{!hiddenEndings[key] && <div className="text-sm">{example}</div>}</TableCell>
-                    )}
-                  </TableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
-    )
-  }
-
-  const renderPossessivePronounTable = () => {
-    return (
-      <div className="space-y-6">
-        <div className="flex flex-wrap gap-2 mb-4">
-          <Button variant={possessiveType === "my" ? "default" : "outline"} onClick={() => setPossessiveType("my")}>
-            My (мой)
-          </Button>
-          <Button variant={possessiveType === "your" ? "default" : "outline"} onClick={() => setPossessiveType("your")}>
-            Your (твой)
-          </Button>
-          <Button variant={possessiveType === "our" ? "default" : "outline"} onClick={() => setPossessiveType("our")}>
-            Our (наш)
-          </Button>
-          <Button
-            variant={possessiveType === "your_plural" ? "default" : "outline"}
-            onClick={() => setPossessiveType("your_plural")}
-          >
-            Your (pl.) (ваш)
-          </Button>
-          <Button
-            variant={possessiveType === "reflexive" ? "default" : "outline"}
-            onClick={() => setPossessiveType("reflexive")}
-          >
-            Reflexive (свой)
-          </Button>
-          <Button variant={possessiveType === "his" ? "default" : "outline"} onClick={() => setPossessiveType("his")}>
-            His (его)
-          </Button>
-          <Button variant={possessiveType === "her" ? "default" : "outline"} onClick={() => setPossessiveType("her")}>
-            Her (её)
-          </Button>
-          <Button
-            variant={possessiveType === "their" ? "default" : "outline"}
-            onClick={() => setPossessiveType("their")}
-          >
-            Their (их)
-          </Button>
-        </div>
-
-        {possessiveType === "his" || possessiveType === "her" || possessiveType === "their" ? (
-          <div className="p-4 border rounded-md">
-            <p className="text-center">
-              The possessive pronouns{" "}
-              <strong>{possessiveType === "his" ? "его" : possessiveType === "her" ? "её" : "их"}</strong> are
-              invariable and do not change for case, gender, or number.
-            </p>
-          </div>
-        ) : (
-          <>
-            <div className="flex flex-wrap gap-2 mb-4">
-              <Button
-                variant={possessiveNumber === "singular" ? "default" : "outline"}
-                onClick={() => setPossessiveNumber("singular")}
-              >
-                Singular
-              </Button>
-              <Button
-                variant={possessiveNumber === "plural" ? "default" : "outline"}
-                onClick={() => setPossessiveNumber("plural")}
-              >
-                Plural
-              </Button>
-            </div>
-
-            {possessiveNumber === "singular" && (
-              <div className="flex flex-wrap gap-2 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Quantity</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
                 <Button
-                  variant={possessiveGender === "masculine" ? "default" : "outline"}
-                  onClick={() => setPossessiveGender("masculine")}
+                  variant={personNumber === "singular" ? "default" : "outline"}
+                  onClick={() => setPersonNumber("singular")}
+                  size="sm"
                 >
-                  Masculine
+                  <User className="h-4 w-4 mr-2" />
+                  Singular
                 </Button>
                 <Button
-                  variant={possessiveGender === "feminine" ? "default" : "outline"}
-                  onClick={() => setPossessiveGender("feminine")}
+                  variant={personNumber === "plural" ? "default" : "outline"}
+                  onClick={() => setPersonNumber("plural")}
+                  size="sm"
                 >
-                  Feminine
-                </Button>
-                <Button
-                  variant={possessiveGender === "neuter" ? "default" : "outline"}
-                  onClick={() => setPossessiveGender("neuter")}
-                >
-                  Neuter
+                  <Users className="h-4 w-4 mr-2" />
+                  Plural
                 </Button>
               </div>
-            )}
+            </CardContent>
+          </Card>
 
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Person</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  variant={person === "first" ? "default" : "outline"}
+                  onClick={() => setPerson("first")}
+                  size="sm"
+                >
+                  1st Person (я/мы)
+                </Button>
+                <Button
+                  variant={person === "second" ? "default" : "outline"}
+                  onClick={() => setPerson("second")}
+                  size="sm"
+                >
+                  2nd Person (ты/вы)
+                </Button>
+                <Button
+                  variant={person === "third" ? "default" : "outline"}
+                  onClick={() => setPerson("third")}
+                  size="sm"
+                >
+                  3rd Person (он/она/оно/они)
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {personNumber === "singular" && person === "third" && (
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Gender</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  variant={thirdPersonGender === "masculine" ? "default" : "outline"}
+                  onClick={() => setThirdPersonGender("masculine")}
+                  size="sm"
+                >
+                  Masculine (он)
+                </Button>
+                <Button
+                  variant={thirdPersonGender === "feminine" ? "default" : "outline"}
+                  onClick={() => setThirdPersonGender("feminine")}
+                  size="sm"
+                >
+                  Feminine (она)
+                </Button>
+                <Button
+                  variant={thirdPersonGender === "neuter" ? "default" : "outline"}
+                  onClick={() => setThirdPersonGender("neuter")}
+                  size="sm"
+                >
+                  Neuter (оно)
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle>
+              {personNumber === "singular"
+                ? person === "first"
+                  ? "Я (I)"
+                  : person === "second"
+                    ? "Ты (You)"
+                    : thirdPersonGender === "masculine"
+                      ? "Он (He)"
+                      : thirdPersonGender === "feminine"
+                        ? "Она (She)"
+                        : "Оно (It)"
+                : person === "first"
+                  ? "Мы (We)"
+                  : person === "second"
+                    ? "Вы (You)"
+                    : "Они (They)"}
+            </CardTitle>
+            <CardDescription>
+              {personNumber === "singular" ? "Singular" : "Plural"}{" "}
+              {person === "first" ? "1st" : person === "second" ? "2nd" : "3rd"} person
+              {personNumber === "singular" && person === "third"
+                ? `, ${thirdPersonGender === "masculine" ? "masculine" : thirdPersonGender === "feminine" ? "feminine" : "neuter"}`
+                : ""}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
             <div className="rounded-md border">
               <Table>
                 <TableHeader>
@@ -1539,53 +1503,36 @@ export default function PronounDeclensionTable() {
                     let pronoun
                     let example
 
-                    if (possessiveNumber === "singular") {
-                      if (caseType === "accusative" && possessiveGender === "masculine") {
-                        pronoun = {
-                          animate: possessivePronouns[possessiveType].singular[possessiveGender].accusative.animate,
-                          inanimate: possessivePronouns[possessiveType].singular[possessiveGender].accusative.inanimate,
-                        }
+                    if (personNumber === "singular") {
+                      if (person === "third") {
+                        pronoun = personalPronouns.singular.third[thirdPersonGender][caseType]
+                        example = personalPronounExamples.singular.third[thirdPersonGender][caseType]
                       } else {
-                        pronoun = possessivePronouns[possessiveType].singular[possessiveGender][caseType]
+                        pronoun = personalPronouns.singular[person][caseType]
+                        example = personalPronounExamples.singular[person][caseType]
                       }
-                      example = possessivePronounExamples[possessiveType].singular[possessiveGender][caseType]
                     } else {
-                      if (caseType === "accusative") {
-                        pronoun = {
-                          animate: possessivePronouns[possessiveType].plural.accusative.animate,
-                          inanimate: possessivePronouns[possessiveType].plural.accusative.inanimate,
-                        }
-                      } else {
-                        pronoun = possessivePronouns[possessiveType].plural[caseType]
-                      }
-                      example = possessivePronounExamples[possessiveType].plural[caseType]
+                      pronoun = personalPronouns.plural[person][caseType]
+                      example = personalPronounExamples.plural[person][caseType]
                     }
 
-                    const key = `${caseType}_possessive`
+                    const key = `${caseType}_personal`
                     return (
                       <TableRow key={caseType}>
                         <TableCell className="font-medium">
                           {caseTranslations[caseType]}
                           <div className="text-xs text-muted-foreground">{caseType}</div>
                         </TableCell>
-                        <TableCell onClick={() => toggleEndingVisibility(caseType, "possessive")}>
+                        <TableCell
+                          onClick={() => toggleEndingVisibility(caseType, "personal")}
+                          className={testMode ? "cursor-pointer hover:bg-muted" : ""}
+                        >
                           {hiddenEndings[key] ? (
                             <Button variant="ghost" size="sm" className="h-6 text-xs">
                               <Eye size={14} className="mr-1" /> Show
                             </Button>
-                          ) : caseType === "accusative" && typeof pronoun !== "string" ? (
-                            <>
-                              <div>
-                                <div className="text-sm font-medium">Inanimate:</div>
-                                <div className="font-medium">{(pronoun as AccusativeForm).inanimate}</div>
-                              </div>
-                              <div className="mt-2">
-                                <div className="text-sm font-medium">Animate:</div>
-                                <div className="font-medium">{(pronoun as AccusativeForm).animate}</div>
-                              </div>
-                            </>
                           ) : (
-                            <div className="font-medium">{pronoun as string}</div>
+                            <div className="font-medium text-lg">{pronoun}</div>
                           )}
                         </TableCell>
                         {showExamples && (
@@ -1597,471 +1544,935 @@ export default function PronounDeclensionTable() {
                 </TableBody>
               </Table>
             </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  // Render the possessive pronoun table
+  const renderPossessivePronounTable = () => {
+    const possessiveLabels: Record<PossessiveType, string> = {
+      my: "Мой (My)",
+      your: "Твой (Your)",
+      our: "Наш (Our)",
+      your_plural: "Ваш (Your pl.)",
+      reflexive: "Свой (One's own)",
+      his: "Его (His)",
+      her: "Её (Her)",
+      their: "Их (Their)",
+    }
+
+    return (
+      <div className="space-y-6">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg">Possessive Type</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+              <Button
+                variant={possessiveType === "my" ? "default" : "outline"}
+                onClick={() => setPossessiveType("my")}
+                size="sm"
+                className="justify-start"
+              >
+                Мой (My)
+              </Button>
+              <Button
+                variant={possessiveType === "your" ? "default" : "outline"}
+                onClick={() => setPossessiveType("your")}
+                size="sm"
+                className="justify-start"
+              >
+                Твой (Your)
+              </Button>
+              <Button
+                variant={possessiveType === "our" ? "default" : "outline"}
+                onClick={() => setPossessiveType("our")}
+                size="sm"
+                className="justify-start"
+              >
+                Наш (Our)
+              </Button>
+              <Button
+                variant={possessiveType === "your_plural" ? "default" : "outline"}
+                onClick={() => setPossessiveType("your_plural")}
+                size="sm"
+                className="justify-start"
+              >
+                Ваш (Your pl.)
+              </Button>
+              <Button
+                variant={possessiveType === "reflexive" ? "default" : "outline"}
+                onClick={() => setPossessiveType("reflexive")}
+                size="sm"
+                className="justify-start"
+              >
+                Свой (One's own)
+              </Button>
+              <Button
+                variant={possessiveType === "his" ? "default" : "outline"}
+                onClick={() => setPossessiveType("his")}
+                size="sm"
+                className="justify-start"
+              >
+                Его (His)
+              </Button>
+              <Button
+                variant={possessiveType === "her" ? "default" : "outline"}
+                onClick={() => setPossessiveType("her")}
+                size="sm"
+                className="justify-start"
+              >
+                Её (Her)
+              </Button>
+              <Button
+                variant={possessiveType === "their" ? "default" : "outline"}
+                onClick={() => setPossessiveType("their")}
+                size="sm"
+                className="justify-start"
+              >
+                Их (Their)
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {possessiveType === "his" || possessiveType === "her" || possessiveType === "their" ? (
+          <Card>
+            <CardHeader>
+              <CardTitle>
+                {possessiveType === "his" ? "Его (His)" : possessiveType === "her" ? "Её (Her)" : "Их (Their)"}
+              </CardTitle>
+              <CardDescription>
+                This possessive pronoun is invariable and does not change for case, gender, or quantity.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="p-4 border rounded-md bg-muted/50">
+                <p className="text-center text-lg font-medium">
+                  <strong>{possessiveType === "his" ? "его" : possessiveType === "her" ? "её" : "их"}</strong>
+                </p>
+                <p className="text-center mt-2">
+                  Example:{" "}
+                  {possessiveType === "his"
+                    ? "Это его книга."
+                    : possessiveType === "her"
+                      ? "Это её книга."
+                      : "Это их книга."}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg">Quantity</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      variant={possessiveNumber === "singular" ? "default" : "outline"}
+                      onClick={() => setPossessiveNumber("singular")}
+                      size="sm"
+                    >
+                      <User className="h-4 w-4 mr-2" />
+                      Singular
+                    </Button>
+                    <Button
+                      variant={possessiveNumber === "plural" ? "default" : "outline"}
+                      onClick={() => setPossessiveNumber("plural")}
+                      size="sm"
+                    >
+                      <Users className="h-4 w-4 mr-2" />
+                      Plural
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {possessiveNumber === "singular" && (
+                <Card>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-lg">Gender</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        variant={possessiveGender === "masculine" ? "default" : "outline"}
+                        onClick={() => setPossessiveGender("masculine")}
+                        size="sm"
+                      >
+                        Masculine
+                      </Button>
+                      <Button
+                        variant={possessiveGender === "feminine" ? "default" : "outline"}
+                        onClick={() => setPossessiveGender("feminine")}
+                        size="sm"
+                      >
+                        Feminine
+                      </Button>
+                      <Button
+                        variant={possessiveGender === "neuter" ? "default" : "outline"}
+                        onClick={() => setPossessiveGender("neuter")}
+                        size="sm"
+                      >
+                        Neuter
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  {possessiveLabels[possessiveType]}{" "}
+                  {possessiveNumber === "singular"
+                    ? possessiveGender === "masculine"
+                      ? "(Masculine)"
+                      : possessiveGender === "feminine"
+                        ? "(Feminine)"
+                        : "(Neuter)"
+                    : "(Plural)"}
+                </CardTitle>
+                <CardDescription>
+                  {possessiveNumber === "singular" ? "Singular" : "Plural"}{" "}
+                  {possessiveNumber === "singular"
+                    ? possessiveGender === "masculine"
+                      ? "masculine"
+                      : possessiveGender === "feminine"
+                        ? "feminine"
+                        : "neuter"
+                    : ""}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="rounded-md border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="w-[150px]">Case</TableHead>
+                        <TableHead>Pronoun</TableHead>
+                        {showExamples && <TableHead>Example</TableHead>}
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {cases.map((caseType) => {
+                        let pronoun
+                        let example
+
+                        if (possessiveNumber === "singular") {
+                          if (caseType === "accusative" && possessiveGender === "masculine") {
+                            pronoun = {
+                              animate: possessivePronouns[possessiveType].singular[possessiveGender].accusative.animate,
+                              inanimate:
+                                possessivePronouns[possessiveType].singular[possessiveGender].accusative.inanimate,
+                            }
+                          } else {
+                            pronoun = possessivePronouns[possessiveType].singular[possessiveGender][caseType]
+                          }
+                          example = possessivePronounExamples[possessiveType].singular[possessiveGender][caseType]
+                        } else {
+                          if (caseType === "accusative") {
+                            pronoun = {
+                              animate: possessivePronouns[possessiveType].plural.accusative.animate,
+                              inanimate: possessivePronouns[possessiveType].plural.accusative.inanimate,
+                            }
+                          } else {
+                            pronoun = possessivePronouns[possessiveType].plural[caseType]
+                          }
+                          example = possessivePronounExamples[possessiveType].plural[caseType]
+                        }
+
+                        const key = `${caseType}_possessive`
+                        return (
+                          <TableRow key={caseType}>
+                            <TableCell className="font-medium">
+                              {caseTranslations[caseType]}
+                              <div className="text-xs text-muted-foreground">{caseType}</div>
+                            </TableCell>
+                            <TableCell
+                              onClick={() => toggleEndingVisibility(caseType, "possessive")}
+                              className={testMode ? "cursor-pointer hover:bg-muted" : ""}
+                            >
+                              {hiddenEndings[key] ? (
+                                <Button variant="ghost" size="sm" className="h-6 text-xs">
+                                  <Eye size={14} className="mr-1" /> Show
+                                </Button>
+                              ) : caseType === "accusative" && typeof pronoun !== "string" ? (
+                                <>
+                                  <div>
+                                    <div className="text-sm font-medium">Inanimate:</div>
+                                    <div className="font-medium text-lg">{(pronoun as AccusativeForm).inanimate}</div>
+                                  </div>
+                                  <div className="mt-2">
+                                    <div className="text-sm font-medium">Animate:</div>
+                                    <div className="font-medium text-lg">{(pronoun as AccusativeForm).animate}</div>
+                                  </div>
+                                </>
+                              ) : (
+                                <div className="font-medium text-lg">{pronoun as string}</div>
+                              )}
+                            </TableCell>
+                            {showExamples && (
+                              <TableCell>{!hiddenEndings[key] && <div className="text-sm">{example}</div>}</TableCell>
+                            )}
+                          </TableRow>
+                        )
+                      })}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
           </>
         )}
       </div>
     )
   }
 
+  // Render the demonstrative pronoun table
   const renderDemonstrativePronounTable = () => {
     return (
       <div className="space-y-6">
-        <div className="flex flex-wrap gap-2 mb-4">
-          <Button
-            variant={demonstrativeType === "this" ? "default" : "outline"}
-            onClick={() => setDemonstrativeType("this")}
-          >
-            This (этот)
-          </Button>
-          <Button
-            variant={demonstrativeType === "that" ? "default" : "outline"}
-            onClick={() => setDemonstrativeType("that")}
-          >
-            That (тот)
-          </Button>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Type</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  variant={demonstrativeType === "this" ? "default" : "outline"}
+                  onClick={() => setDemonstrativeType("this")}
+                  size="sm"
+                >
+                  Этот (This)
+                </Button>
+                <Button
+                  variant={demonstrativeType === "that" ? "default" : "outline"}
+                  onClick={() => setDemonstrativeType("that")}
+                  size="sm"
+                >
+                  Тот (That)
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Quantity</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  variant={demonstrativeNumber === "singular" ? "default" : "outline"}
+                  onClick={() => setDemonstrativeNumber("singular")}
+                  size="sm"
+                >
+                  <User className="h-4 w-4 mr-2" />
+                  Singular
+                </Button>
+                <Button
+                  variant={demonstrativeNumber === "plural" ? "default" : "outline"}
+                  onClick={() => setDemonstrativeNumber("plural")}
+                  size="sm"
+                >
+                  <Users className="h-4 w-4 mr-2" />
+                  Plural
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {demonstrativeNumber === "singular" && (
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg">Gender</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    variant={demonstrativeGender === "masculine" ? "default" : "outline"}
+                    onClick={() => setDemonstrativeGender("masculine")}
+                    size="sm"
+                  >
+                    Masculine
+                  </Button>
+                  <Button
+                    variant={demonstrativeGender === "feminine" ? "default" : "outline"}
+                    onClick={() => setDemonstrativeGender("feminine")}
+                    size="sm"
+                  >
+                    Feminine
+                  </Button>
+                  <Button
+                    variant={demonstrativeGender === "neuter" ? "default" : "outline"}
+                    onClick={() => setDemonstrativeGender("neuter")}
+                    size="sm"
+                  >
+                    Neuter
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-4">
-          <Button
-            variant={demonstrativeNumber === "singular" ? "default" : "outline"}
-            onClick={() => setDemonstrativeNumber("singular")}
-          >
-            Singular
-          </Button>
-          <Button
-            variant={demonstrativeNumber === "plural" ? "default" : "outline"}
-            onClick={() => setDemonstrativeNumber("plural")}
-          >
-            Plural
-          </Button>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>
+              {demonstrativeType === "this" ? "Этот (This)" : "Тот (That)"}{" "}
+              {demonstrativeNumber === "singular"
+                ? demonstrativeGender === "masculine"
+                  ? "(Masculine)"
+                  : demonstrativeGender === "feminine"
+                    ? "(Feminine)"
+                    : "(Neuter)"
+                : "(Plural)"}
+            </CardTitle>
+            <CardDescription>
+              {demonstrativeNumber === "singular" ? "Singular" : "Plural"}{" "}
+              {demonstrativeNumber === "singular"
+                ? demonstrativeGender === "masculine"
+                  ? "masculine"
+                  : demonstrativeGender === "feminine"
+                    ? "feminine"
+                    : "neuter"
+                : ""}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[150px]">Case</TableHead>
+                    <TableHead>Pronoun</TableHead>
+                    {showExamples && <TableHead>Example</TableHead>}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {cases.map((caseType) => {
+                    let pronoun
+                    let example
 
-        {demonstrativeNumber === "singular" && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            <Button
-              variant={demonstrativeGender === "masculine" ? "default" : "outline"}
-              onClick={() => setDemonstrativeGender("masculine")}
-            >
-              Masculine
-            </Button>
-            <Button
-              variant={demonstrativeGender === "feminine" ? "default" : "outline"}
-              onClick={() => setDemonstrativeGender("feminine")}
-            >
-              Feminine
-            </Button>
-            <Button
-              variant={demonstrativeGender === "neuter" ? "default" : "outline"}
-              onClick={() => setDemonstrativeGender("neuter")}
-            >
-              Neuter
-            </Button>
+                    if (demonstrativeNumber === "singular") {
+                      if (caseType === "accusative" && demonstrativeGender === "masculine") {
+                        pronoun = {
+                          animate:
+                            demonstrativePronouns[demonstrativeType].singular[demonstrativeGender].accusative.animate,
+                          inanimate:
+                            demonstrativePronouns[demonstrativeType].singular[demonstrativeGender].accusative.inanimate,
+                        }
+                      } else {
+                        pronoun = demonstrativePronouns[demonstrativeType].singular[demonstrativeGender][caseType]
+                      }
+                      example = demonstrativePronounExamples[demonstrativeType].singular[demonstrativeGender][caseType]
+                    } else {
+                      if (caseType === "accusative") {
+                        pronoun = {
+                          animate: demonstrativePronouns[demonstrativeType].plural.accusative.animate,
+                          inanimate: demonstrativePronouns[demonstrativeType].plural.accusative.inanimate,
+                        }
+                      } else {
+                        pronoun = demonstrativePronouns[demonstrativeType].plural[caseType]
+                      }
+                      example = demonstrativePronounExamples[demonstrativeType].plural[caseType]
+                    }
+
+                    const key = `${caseType}_demonstrative`
+                    return (
+                      <TableRow key={caseType}>
+                        <TableCell className="font-medium">
+                          {caseTranslations[caseType]}
+                          <div className="text-xs text-muted-foreground">{caseType}</div>
+                        </TableCell>
+                        <TableCell
+                          onClick={() => toggleEndingVisibility(caseType, "demonstrative")}
+                          className={testMode ? "cursor-pointer hover:bg-muted" : ""}
+                        >
+                          {hiddenEndings[key] ? (
+                            <Button variant="ghost" size="sm" className="h-6 text-xs">
+                              <Eye size={14} className="mr-1" /> Show
+                            </Button>
+                          ) : caseType === "accusative" && typeof pronoun !== "string" ? (
+                            <>
+                              <div>
+                                <div className="text-sm font-medium">Inanimate:</div>
+                                <div className="font-medium text-lg">{(pronoun as AccusativeForm).inanimate}</div>
+                              </div>
+                              <div className="mt-2">
+                                <div className="text-sm font-medium">Animate:</div>
+                                <div className="font-medium text-lg">{(pronoun as AccusativeForm).animate}</div>
+                              </div>
+                            </>
+                          ) : (
+                            <div className="font-medium text-lg">{pronoun as string}</div>
+                          )}
+                        </TableCell>
+                        {showExamples && (
+                          <TableCell>{!hiddenEndings[key] && <div className="text-sm">{example}</div>}</TableCell>
+                        )}
+                      </TableRow>
+                    )
+                  })}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  // Render the interrogative pronoun table
+  const renderInterrogativePronounTable = () => {
+    const interrogativeLabels: Record<InterrogativeType, string> = {
+      who: "Кто (Who)",
+      what: "Что (What)",
+      which: "Какой (Which)",
+      whose: "Чей (Whose)",
+    }
+
+    return (
+      <div className="space-y-6">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg">Type</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+              <Button
+                variant={interrogativeType === "who" ? "default" : "outline"}
+                onClick={() => setInterrogativeType("who")}
+                size="sm"
+              >
+                Кто (Who)
+              </Button>
+              <Button
+                variant={interrogativeType === "what" ? "default" : "outline"}
+                onClick={() => setInterrogativeType("what")}
+                size="sm"
+              >
+                Что (What)
+              </Button>
+              <Button
+                variant={interrogativeType === "which" ? "default" : "outline"}
+                onClick={() => setInterrogativeType("which")}
+                size="sm"
+              >
+                Какой (Which)
+              </Button>
+              <Button
+                variant={interrogativeType === "whose" ? "default" : "outline"}
+                onClick={() => setInterrogativeType("whose")}
+                size="sm"
+              >
+                Чей (Whose)
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {(interrogativeType === "which" || interrogativeType === "whose") && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg">Quantity</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    variant={interrogativeNumber === "singular" ? "default" : "outline"}
+                    onClick={() => setInterrogativeNumber("singular")}
+                    size="sm"
+                  >
+                    <User className="h-4 w-4 mr-2" />
+                    Singular
+                  </Button>
+                  <Button
+                    variant={interrogativeNumber === "plural" ? "default" : "outline"}
+                    onClick={() => setInterrogativeNumber("plural")}
+                    size="sm"
+                  >
+                    <Users className="h-4 w-4 mr-2" />
+                    Plural
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {interrogativeNumber === "singular" && (
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg">Gender</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      variant={interrogativeGender === "masculine" ? "default" : "outline"}
+                      onClick={() => setInterrogativeGender("masculine")}
+                      size="sm"
+                    >
+                      Masculine
+                    </Button>
+                    <Button
+                      variant={interrogativeGender === "feminine" ? "default" : "outline"}
+                      onClick={() => setInterrogativeGender("feminine")}
+                      size="sm"
+                    >
+                      Feminine
+                    </Button>
+                    <Button
+                      variant={interrogativeGender === "neuter" ? "default" : "outline"}
+                      onClick={() => setInterrogativeGender("neuter")}
+                      size="sm"
+                    >
+                      Neuter
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
         )}
 
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[150px]">Case</TableHead>
-                <TableHead>Pronoun</TableHead>
-                {showExamples && <TableHead>Example</TableHead>}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {cases.map((caseType) => {
-                let pronoun
-                let example
-
-                if (demonstrativeNumber === "singular") {
-                  if (caseType === "accusative" && demonstrativeGender === "masculine") {
-                    pronoun = {
-                      animate:
-                        demonstrativePronouns[demonstrativeType].singular[demonstrativeGender].accusative.animate,
-                      inanimate:
-                        demonstrativePronouns[demonstrativeType].singular[demonstrativeGender].accusative.inanimate,
-                    }
-                  } else {
-                    pronoun = demonstrativePronouns[demonstrativeType].singular[demonstrativeGender][caseType]
-                  }
-                  example = demonstrativePronounExamples[demonstrativeType].singular[demonstrativeGender][caseType]
-                } else {
-                  if (caseType === "accusative") {
-                    pronoun = {
-                      animate: demonstrativePronouns[demonstrativeType].plural.accusative.animate,
-                      inanimate: demonstrativePronouns[demonstrativeType].plural.accusative.inanimate,
-                    }
-                  } else {
-                    pronoun = demonstrativePronouns[demonstrativeType].plural[caseType]
-                  }
-                  example = demonstrativePronounExamples[demonstrativeType].plural[caseType]
-                }
-
-                const key = `${caseType}_demonstrative`
-                return (
-                  <TableRow key={caseType}>
-                    <TableCell className="font-medium">
-                      {caseTranslations[caseType]}
-                      <div className="text-xs text-muted-foreground">{caseType}</div>
-                    </TableCell>
-                    <TableCell onClick={() => toggleEndingVisibility(caseType, "demonstrative")}>
-                      {hiddenEndings[key] ? (
-                        <Button variant="ghost" size="sm" className="h-6 text-xs">
-                          <Eye size={14} className="mr-1" /> Show
-                        </Button>
-                      ) : caseType === "accusative" && typeof pronoun !== "string" ? (
-                        <>
-                          <div>
-                            <div className="text-sm font-medium">Inanimate:</div>
-                            <div className="font-medium">{(pronoun as AccusativeForm).inanimate}</div>
-                          </div>
-                          <div className="mt-2">
-                            <div className="text-sm font-medium">Animate:</div>
-                            <div className="font-medium">{(pronoun as AccusativeForm).animate}</div>
-                          </div>
-                        </>
-                      ) : (
-                        <div className="font-medium">{pronoun as string}</div>
-                      )}
-                    </TableCell>
-                    {showExamples && (
-                      <TableCell>{!hiddenEndings[key] && <div className="text-sm">{example}</div>}</TableCell>
-                    )}
+        <Card>
+          <CardHeader>
+            <CardTitle>
+              {interrogativeLabels[interrogativeType]}{" "}
+              {(interrogativeType === "which" || interrogativeType === "whose") && (
+                <>
+                  {interrogativeNumber === "singular"
+                    ? interrogativeGender === "masculine"
+                      ? "(Masculine)"
+                      : interrogativeGender === "feminine"
+                        ? "(Feminine)"
+                        : "(Neuter)"
+                    : "(Plural)"}
+                </>
+              )}
+            </CardTitle>
+            <CardDescription>
+              {(interrogativeType === "which" || interrogativeType === "whose") && (
+                <>
+                  {interrogativeNumber === "singular" ? "Singular" : "Plural"}{" "}
+                  {interrogativeNumber === "singular"
+                    ? interrogativeGender === "masculine"
+                      ? "masculine"
+                      : interrogativeGender === "feminine"
+                        ? "feminine"
+                        : "neuter"
+                    : ""}
+                </>
+              )}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[150px]">Case</TableHead>
+                    <TableHead>Pronoun</TableHead>
+                    {showExamples && <TableHead>Example</TableHead>}
                   </TableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
-        </div>
+                </TableHeader>
+                <TableBody>
+                  {cases.map((caseType) => {
+                    let pronoun
+                    let example
+
+                    if (interrogativeType === "who" || interrogativeType === "what") {
+                      pronoun = interrogativePronouns[interrogativeType][caseType]
+                      example = interrogativePronounExamples[interrogativeType][caseType]
+                    } else {
+                      if (interrogativeNumber === "singular") {
+                        if (caseType === "accusative" && interrogativeGender === "masculine") {
+                          pronoun = {
+                            animate:
+                              interrogativePronouns[interrogativeType].singular[interrogativeGender].accusative.animate,
+                            inanimate:
+                              interrogativePronouns[interrogativeType].singular[interrogativeGender].accusative
+                                .inanimate,
+                          }
+                        } else {
+                          pronoun = interrogativePronouns[interrogativeType].singular[interrogativeGender][caseType]
+                        }
+                        example =
+                          interrogativePronounExamples[interrogativeType].singular[interrogativeGender][caseType]
+                      } else {
+                        if (caseType === "accusative") {
+                          pronoun = {
+                            animate: interrogativePronouns[interrogativeType].plural.accusative.animate,
+                            inanimate: interrogativePronouns[interrogativeType].plural.accusative.inanimate,
+                          }
+                        } else {
+                          pronoun = interrogativePronouns[interrogativeType].plural[caseType]
+                        }
+                        example = interrogativePronounExamples[interrogativeType].plural[caseType]
+                      }
+                    }
+
+                    const key = `${caseType}_interrogative`
+                    return (
+                      <TableRow key={caseType}>
+                        <TableCell className="font-medium">
+                          {caseTranslations[caseType]}
+                          <div className="text-xs text-muted-foreground">{caseType}</div>
+                        </TableCell>
+                        <TableCell
+                          onClick={() => toggleEndingVisibility(caseType, "interrogative")}
+                          className={testMode ? "cursor-pointer hover:bg-muted" : ""}
+                        >
+                          {hiddenEndings[key] ? (
+                            <Button variant="ghost" size="sm" className="h-6 text-xs">
+                              <Eye size={14} className="mr-1" /> Show
+                            </Button>
+                          ) : (interrogativeType === "which" || interrogativeType === "whose") &&
+                            caseType === "accusative" &&
+                            typeof pronoun !== "string" ? (
+                            <>
+                              <div>
+                                <div className="text-sm font-medium">Inanimate:</div>
+                                <div className="font-medium text-lg">{(pronoun as AccusativeForm).inanimate}</div>
+                              </div>
+                              <div className="mt-2">
+                                <div className="text-sm font-medium">Animate:</div>
+                                <div className="font-medium text-lg">{(pronoun as AccusativeForm).animate}</div>
+                              </div>
+                            </>
+                          ) : (
+                            <div className="font-medium text-lg">{pronoun as string}</div>
+                          )}
+                        </TableCell>
+                        {showExamples && (
+                          <TableCell>{!hiddenEndings[key] && <div className="text-sm">{example}</div>}</TableCell>
+                        )}
+                      </TableRow>
+                    )
+                  })}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     )
   }
 
-  const renderInterrogativePronounTable = () => {
+  // Render the negative pronoun table
+  const renderNegativePronounTable = () => {
+    const negativeLabels: Record<NegativeType, string> = {
+      nobody: "Никто (Nobody)",
+      nothing: "Ничто (Nothing)",
+      no_one_to: "Некого (No one to)",
+      nothing_to: "Нечего (Nothing to)",
+    }
+
     return (
       <div className="space-y-6">
-        <div className="flex flex-wrap gap-2 mb-4">
-          <Button
-            variant={interrogativeType === "who" ? "default" : "outline"}
-            onClick={() => setInterrogativeType("who")}
-          >
-            Who (кто)
-          </Button>
-          <Button
-            variant={interrogativeType === "what" ? "default" : "outline"}
-            onClick={() => setInterrogativeType("what")}
-          >
-            What (что)
-          </Button>
-          <Button
-            variant={interrogativeType === "which" ? "default" : "outline"}
-            onClick={() => setInterrogativeType("which")}
-          >
-            Which (какой)
-          </Button>
-          <Button
-            variant={interrogativeType === "whose" ? "default" : "outline"}
-            onClick={() => setInterrogativeType("whose")}
-          >
-            Whose (чей)
-          </Button>
-        </div>
-
-        {(interrogativeType === "which" || interrogativeType === "whose") && (
-          <>
-            <div className="flex flex-wrap gap-2 mb-4">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg">Type</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
               <Button
-                variant={interrogativeNumber === "singular" ? "default" : "outline"}
-                onClick={() => setInterrogativeNumber("singular")}
+                variant={negativeType === "nobody" ? "default" : "outline"}
+                onClick={() => setNegativeType("nobody")}
+                size="sm"
               >
-                Singular
+                Никто (Nobody)
               </Button>
               <Button
-                variant={interrogativeNumber === "plural" ? "default" : "outline"}
-                onClick={() => setInterrogativeNumber("plural")}
+                variant={negativeType === "nothing" ? "default" : "outline"}
+                onClick={() => setNegativeType("nothing")}
+                size="sm"
               >
-                Plural
+                Ничто (Nothing)
+              </Button>
+              <Button
+                variant={negativeType === "no_one_to" ? "default" : "outline"}
+                onClick={() => setNegativeType("no_one_to")}
+                size="sm"
+              >
+                Некого (No one to)
+              </Button>
+              <Button
+                variant={negativeType === "nothing_to" ? "default" : "outline"}
+                onClick={() => setNegativeType("nothing_to")}
+                size="sm"
+              >
+                Нечего (Nothing to)
               </Button>
             </div>
+          </CardContent>
+        </Card>
 
-            {interrogativeNumber === "singular" && (
-              <div className="flex flex-wrap gap-2 mb-4">
-                <Button
-                  variant={interrogativeGender === "masculine" ? "default" : "outline"}
-                  onClick={() => setInterrogativeGender("masculine")}
-                >
-                  Masculine
-                </Button>
-                <Button
-                  variant={interrogativeGender === "feminine" ? "default" : "outline"}
-                  onClick={() => setInterrogativeGender("feminine")}
-                >
-                  Feminine
-                </Button>
-                <Button
-                  variant={interrogativeGender === "neuter" ? "default" : "outline"}
-                  onClick={() => setInterrogativeGender("neuter")}
-                >
-                  Neuter
-                </Button>
-              </div>
-            )}
-          </>
-        )}
-
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[150px]">Case</TableHead>
-                <TableHead>Pronoun</TableHead>
-                {showExamples && <TableHead>Example</TableHead>}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {cases.map((caseType) => {
-                let pronoun
-                let example
-
-                if (interrogativeType === "who" || interrogativeType === "what") {
-                  pronoun = interrogativePronouns[interrogativeType][caseType]
-                  example = interrogativePronounExamples[interrogativeType][caseType]
-                } else {
-                  if (interrogativeNumber === "singular") {
-                    if (caseType === "accusative" && interrogativeGender === "masculine") {
-                      pronoun = {
-                        animate:
-                          interrogativePronouns[interrogativeType].singular[interrogativeGender].accusative.animate,
-                        inanimate:
-                          interrogativePronouns[interrogativeType].singular[interrogativeGender].accusative.inanimate,
-                      }
-                    } else {
-                      pronoun = interrogativePronouns[interrogativeType].singular[interrogativeGender][caseType]
-                    }
-                    example = interrogativePronounExamples[interrogativeType].singular[interrogativeGender][caseType]
-                  } else {
-                    if (caseType === "accusative") {
-                      pronoun = {
-                        animate: interrogativePronouns[interrogativeType].plural.accusative.animate,
-                        inanimate: interrogativePronouns[interrogativeType].plural.accusative.inanimate,
-                      }
-                    } else {
-                      pronoun = interrogativePronouns[interrogativeType].plural[caseType]
-                    }
-                    example = interrogativePronounExamples[interrogativeType].plural[caseType]
-                  }
-                }
-
-                const key = `${caseType}_interrogative`
-                return (
-                  <TableRow key={caseType}>
-                    <TableCell className="font-medium">
-                      {caseTranslations[caseType]}
-                      <div className="text-xs text-muted-foreground">{caseType}</div>
-                    </TableCell>
-                    <TableCell onClick={() => toggleEndingVisibility(caseType, "interrogative")}>
-                      {hiddenEndings[key] ? (
-                        <Button variant="ghost" size="sm" className="h-6 text-xs">
-                          <Eye size={14} className="mr-1" /> Show
-                        </Button>
-                      ) : (interrogativeType === "which" || interrogativeType === "whose") &&
-                        caseType === "accusative" &&
-                        typeof pronoun !== "string" ? (
-                        <>
-                          <div>
-                            <div className="text-sm font-medium">Inanimate:</div>
-                            <div className="font-medium">{(pronoun as AccusativeForm).inanimate}</div>
-                          </div>
-                          <div className="mt-2">
-                            <div className="text-sm font-medium">Animate:</div>
-                            <div className="font-medium">{(pronoun as AccusativeForm).animate}</div>
-                          </div>
-                        </>
-                      ) : (
-                        <div className="font-medium">{pronoun as string}</div>
-                      )}
-                    </TableCell>
-                    {showExamples && (
-                      <TableCell>{!hiddenEndings[key] && <div className="text-sm">{example}</div>}</TableCell>
-                    )}
+        <Card>
+          <CardHeader>
+            <CardTitle>{negativeLabels[negativeType]}</CardTitle>
+            <CardDescription>
+              {negativeType === "nobody" || negativeType === "nothing"
+                ? "Negative pronoun"
+                : "Negative pronoun with infinitive"}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[150px]">Case</TableHead>
+                    <TableHead>Pronoun</TableHead>
+                    {showExamples && <TableHead>Example</TableHead>}
                   </TableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
-        </div>
+                </TableHeader>
+                <TableBody>
+                  {cases.map((caseType) => {
+                    const pronoun = negativePronouns[negativeType][caseType]
+                    const key = `${caseType}_negative`
+                    const example = negativePronounExamples[negativeType][caseType]
+
+                    return (
+                      <TableRow key={caseType}>
+                        <TableCell className="font-medium">
+                          {caseTranslations[caseType]}
+                          <div className="text-xs text-muted-foreground">{caseType}</div>
+                        </TableCell>
+                        <TableCell
+                          onClick={() => toggleEndingVisibility(caseType, "negative")}
+                          className={testMode ? "cursor-pointer hover:bg-muted" : ""}
+                        >
+                          {hiddenEndings[key] ? (
+                            <Button variant="ghost" size="sm" className="h-6 text-xs">
+                              <Eye size={14} className="mr-1" /> Show
+                            </Button>
+                          ) : (
+                            <div className="font-medium text-lg">{pronoun}</div>
+                          )}
+                        </TableCell>
+                        {showExamples && (
+                          <TableCell>{!hiddenEndings[key] && <div className="text-sm">{example}</div>}</TableCell>
+                        )}
+                      </TableRow>
+                    )
+                  })}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     )
   }
 
-  const renderNegativePronounTable = () => {
-    return (
-      <div className="space-y-6">
-        <div className="flex flex-wrap gap-2 mb-4">
-          <Button variant={negativeType === "nobody" ? "default" : "outline"} onClick={() => setNegativeType("nobody")}>
-            Nobody (никто)
-          </Button>
-          <Button
-            variant={negativeType === "nothing" ? "default" : "outline"}
-            onClick={() => setNegativeType("nothing")}
-          >
-            Nothing (ничто)
-          </Button>
-          <Button
-            variant={negativeType === "no_one_to" ? "default" : "outline"}
-            onClick={() => setNegativeType("no_one_to")}
-          >
-            No one to (некого)
-          </Button>
-          <Button
-            variant={negativeType === "nothing_to" ? "default" : "outline"}
-            onClick={() => setNegativeType("nothing_to")}
-          >
-            Nothing to (нечего)
-          </Button>
-        </div>
-
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[150px]">Case</TableHead>
-                <TableHead>Pronoun</TableHead>
-                {showExamples && <TableHead>Example</TableHead>}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {cases.map((caseType) => {
-                const pronoun = negativePronouns[negativeType][caseType]
-                const key = `${caseType}_negative`
-                const example = negativePronounExamples[negativeType][caseType]
-
-                return (
-                  <TableRow key={caseType}>
-                    <TableCell className="font-medium">
-                      {caseTranslations[caseType]}
-                      <div className="text-xs text-muted-foreground">{caseType}</div>
-                    </TableCell>
-                    <TableCell onClick={() => toggleEndingVisibility(caseType, "negative")}>
-                      {hiddenEndings[key] ? (
-                        <Button variant="ghost" size="sm" className="h-6 text-xs">
-                          <Eye size={14} className="mr-1" /> Show
-                        </Button>
-                      ) : (
-                        <div className="font-medium">{pronoun}</div>
-                      )}
-                    </TableCell>
-                    {showExamples && (
-                      <TableCell>{!hiddenEndings[key] && <div className="text-sm">{example}</div>}</TableCell>
-                    )}
-                  </TableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
-    )
-  }
-
+  // Render the reflexive pronoun table
   const renderReflexivePronounTable = () => {
+    const reflexiveLabels: Record<ReflexiveType, string> = {
+      oneself: "Себя (Oneself)",
+      each_other: "Друг друга (Each other)",
+    }
+
     return (
       <div className="space-y-6">
-        <div className="flex flex-wrap gap-2 mb-4">
-          <Button
-            variant={reflexiveType === "oneself" ? "default" : "outline"}
-            onClick={() => setReflexiveType("oneself")}
-          >
-            Oneself (себя)
-          </Button>
-          <Button
-            variant={reflexiveType === "each_other" ? "default" : "outline"}
-            onClick={() => setReflexiveType("each_other")}
-          >
-            Each other (друг друга)
-          </Button>
-        </div>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg">Type</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant={reflexiveType === "oneself" ? "default" : "outline"}
+                onClick={() => setReflexiveType("oneself")}
+                size="sm"
+              >
+                Себя (Oneself)
+              </Button>
+              <Button
+                variant={reflexiveType === "each_other" ? "default" : "outline"}
+                onClick={() => setReflexiveType("each_other")}
+                size="sm"
+              >
+                Друг друга (Each other)
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[150px]">Case</TableHead>
-                <TableHead>Pronoun</TableHead>
-                {showExamples && <TableHead>Example</TableHead>}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {cases.map((caseType) => {
-                const pronoun = reflexivePronouns[reflexiveType][caseType]
-                const key = `${caseType}_reflexive`
-                const example = reflexivePronounExamples[reflexiveType][caseType]
-
-                return (
-                  <TableRow key={caseType}>
-                    <TableCell className="font-medium">
-                      {caseTranslations[caseType]}
-                      <div className="text-xs text-muted-foreground">{caseType}</div>
-                    </TableCell>
-                    <TableCell onClick={() => toggleEndingVisibility(caseType, "reflexive")}>
-                      {hiddenEndings[key] ? (
-                        <Button variant="ghost" size="sm" className="h-6 text-xs">
-                          <Eye size={14} className="mr-1" /> Show
-                        </Button>
-                      ) : (
-                        <div className="font-medium">{pronoun}</div>
-                      )}
-                    </TableCell>
-                    {showExamples && (
-                      <TableCell>{!hiddenEndings[key] && <div className="text-sm">{example}</div>}</TableCell>
-                    )}
+        <Card>
+          <CardHeader>
+            <CardTitle>{reflexiveLabels[reflexiveType]}</CardTitle>
+            <CardDescription>
+              {reflexiveType === "oneself" ? "Reflexive pronoun" : "Reciprocal pronoun"}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-[150px]">Case</TableHead>
+                    <TableHead>Pronoun</TableHead>
+                    {showExamples && <TableHead>Example</TableHead>}
                   </TableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
-        </div>
+                </TableHeader>
+                <TableBody>
+                  {cases.map((caseType) => {
+                    const pronoun = reflexivePronouns[reflexiveType][caseType]
+                    const key = `${caseType}_reflexive`
+                    const example = reflexivePronounExamples[reflexiveType][caseType]
+
+                    return (
+                      <TableRow key={caseType}>
+                        <TableCell className="font-medium">
+                          {caseTranslations[caseType]}
+                          <div className="text-xs text-muted-foreground">{caseType}</div>
+                        </TableCell>
+                        <TableCell
+                          onClick={() => toggleEndingVisibility(caseType, "reflexive")}
+                          className={testMode ? "cursor-pointer hover:bg-muted" : ""}
+                        >
+                          {hiddenEndings[key] ? (
+                            <Button variant="ghost" size="sm" className="h-6 text-xs">
+                              <Eye size={14} className="mr-1" /> Show
+                            </Button>
+                          ) : (
+                            <div className="font-medium text-lg">{pronoun}</div>
+                          )}
+                        </TableCell>
+                        {showExamples && (
+                          <TableCell>{!hiddenEndings[key] && <div className="text-sm">{example}</div>}</TableCell>
+                        )}
+                      </TableRow>
+                    )
+                  })}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     )
   }
 
+  // Main component render
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4 mb-4">
-        <div className="flex items-center space-x-2">
-          <Switch id="examples" checked={showExamples} onCheckedChange={setShowExamples} />
-          <Label htmlFor="examples">Show Examples</Label>
-        </div>
+    <div className="container mx-auto">
+      <div className="flex flex-col space-y-6">
 
-        <div className="flex items-center space-x-2">
-          <Switch
-            id="hide-endings"
-            checked={Object.keys(hiddenEndings).length > 0}
-            onCheckedChange={(checked) => {
-              if (checked) {
-                // Hide all endings
-                const allHidden: Record<string, boolean> = {}
-                cases.forEach((caseType) => {
-                  allHidden[`${caseType}_personal`] = true
-                  allHidden[`${caseType}_possessive`] = true
-                  allHidden[`${caseType}_demonstrative`] = true
-                  allHidden[`${caseType}_interrogative`] = true
-                  allHidden[`${caseType}_negative`] = true
-                  allHidden[`${caseType}_reflexive`] = true
-                })
-                setHiddenEndings(allHidden)
-              } else {
-                // Show all endings
-                setHiddenEndings({})
-              }
-            }}
-          />
-          <Label htmlFor="hide-endings">Hide Endings (Test Mode)</Label>
-        </div>
-      </div>
 
-      {/* Replace TabsList and TabsTrigger with buttons */}
-      <div className="grid grid-cols-3 md:grid-cols-6 gap-2 mb-6">
+
+
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-2 mb-6">
         <Button
           variant={pronounType === "personal" ? "default" : "outline"}
           onClick={() => setPronounType("personal")}
@@ -2106,6 +2517,22 @@ export default function PronounDeclensionTable() {
         </Button>
       </div>
 
+      <div className="flex items-center gap-2">
+            <div className="flex items-center space-x-2">
+              <Switch id="examples" checked={showExamples} onCheckedChange={setShowExamples} />
+              <Label htmlFor="examples" className="whitespace-nowrap">
+Show Examples
+              </Label>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <Switch id="test-mode" checked={testMode} onCheckedChange={toggleTestMode} />
+              <Label htmlFor="test-mode" className="whitespace-nowrap">
+Test Mode
+              </Label>
+            </div>
+          </div>
+
       {/* Keep the Tabs and TabsContent components for content switching */}
       <Tabs value={pronounType} onValueChange={(value) => setPronounType(value as PronounType)}>
         <TabsContent value="personal">{renderPersonalPronounTable()}</TabsContent>
@@ -2115,15 +2542,8 @@ export default function PronounDeclensionTable() {
         <TabsContent value="negative">{renderNegativePronounTable()}</TabsContent>
         <TabsContent value="reflexive">{renderReflexivePronounTable()}</TabsContent>
       </Tabs>
-
-      {Object.keys(hiddenEndings).length > 0 && (
-        <div className="flex justify-center mt-4">
-          <Button onClick={() => setHiddenEndings({})}>
-            <Eye className="mr-2 h-4 w-4" /> Reveal All Endings
-          </Button>
         </div>
-      )}
-    </div>
+      </div>
   )
 }
 
