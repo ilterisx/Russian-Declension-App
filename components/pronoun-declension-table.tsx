@@ -26,22 +26,8 @@ type InterrogativeType = "who" | "what" | "which" | "whose"
 type NegativeType = "nobody" | "nothing" | "no_one_to" | "nothing_to"
 type ReflexiveType = "oneself" | "each_other"
 
-// Define interfaces for our data structures
-interface PronounCase {
-  [key: string]: string | AccusativeForm
-}
 
-interface PronounGender {
-  [key: string]: PronounCase
-}
 
-interface PronounPerson {
-  [key: string]: PronounCase | PronounGender
-}
-
-interface PronounNumber {
-  [key: string]: PronounCase | PronounPerson
-}
 
 // Russian personal pronouns data
 const personalPronouns = {
