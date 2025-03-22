@@ -1371,7 +1371,7 @@ export default function PronounDeclensionTable() {
                     let example: string | undefined
                     
                     if (["his", "her", "their"].includes(possessiveType)) {
-                      example = possessivePronounExamples[possessiveType].all
+                      example = possessivePronounExamples[possessiveType].singular.masculine[caseType]
                     } else if (possessiveNumber === "singular") {
                       example = possessivePronounExamples[possessiveType].singular[possessiveGender][caseType]
                     } else {
