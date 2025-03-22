@@ -14,8 +14,34 @@ interface AccusativeForm {
   inanimate: string
 }
 
-// Define a type for pronoun types to avoid using 'any'
+// Define types for all possible pronoun types
 type PronounType = "personal" | "possessive" | "demonstrative" | "interrogative" | "negative" | "reflexive"
+type PersonNumber = "singular" | "plural"
+type Person = "first" | "second" | "third"
+type Gender = "masculine" | "feminine" | "neuter"
+type Case = "nominative" | "genitive" | "dative" | "accusative" | "instrumental" | "prepositional"
+type PossessiveType = "my" | "your" | "our" | "your_plural" | "reflexive" | "his" | "her" | "their"
+type DemonstrativeType = "this" | "that"
+type InterrogativeType = "who" | "what" | "which" | "whose"
+type NegativeType = "nobody" | "nothing" | "no_one_to" | "nothing_to"
+type ReflexiveType = "oneself" | "each_other"
+
+// Define interfaces for our data structures
+interface PronounCase {
+  [key: string]: string | AccusativeForm
+}
+
+interface PronounGender {
+  [key: string]: PronounCase
+}
+
+interface PronounPerson {
+  [key: string]: PronounCase | PronounGender
+}
+
+interface PronounNumber {
+  [key: string]: PronounCase | PronounPerson
+}
 
 // Russian personal pronouns data
 const personalPronouns = {
@@ -304,12 +330,114 @@ const possessivePronouns = {
     },
   },
   his: {
+    singular: {
+      masculine: {
+        nominative: "его",
+        genitive: "его",
+        dative: "его",
+        accusative: "его",
+        instrumental: "его",
+        prepositional: "его",
+      },
+      feminine: {
+        nominative: "его",
+        genitive: "его",
+        dative: "его",
+        accusative: "его",
+        instrumental: "его",
+        prepositional: "его",
+      },
+      neuter: {
+        nominative: "его",
+        genitive: "его",
+        dative: "его",
+        accusative: "его",
+        instrumental: "его",
+        prepositional: "его",
+      },
+    },
+    plural: {
+      nominative: "его",
+      genitive: "его",
+      dative: "его",
+      accusative: "его",
+      instrumental: "его",
+      prepositional: "его",
+    },
     all: "его",
   },
   her: {
+    singular: {
+      masculine: {
+        nominative: "её",
+        genitive: "её",
+        dative: "её",
+        accusative: "её",
+        instrumental: "её",
+        prepositional: "её",
+      },
+      feminine: {
+        nominative: "её",
+        genitive: "её",
+        dative: "её",
+        accusative: "её",
+        instrumental: "её",
+        prepositional: "её",
+      },
+      neuter: {
+        nominative: "её",
+        genitive: "её",
+        dative: "её",
+        accusative: "её",
+        instrumental: "её",
+        prepositional: "её",
+      },
+    },
+    plural: {
+      nominative: "её",
+      genitive: "её",
+      dative: "её",
+      accusative: "её",
+      instrumental: "её",
+      prepositional: "её",
+    },
     all: "её",
   },
   their: {
+    singular: {
+      masculine: {
+        nominative: "их",
+        genitive: "их",
+        dative: "их",
+        accusative: "их",
+        instrumental: "их",
+        prepositional: "их",
+      },
+      feminine: {
+        nominative: "их",
+        genitive: "их",
+        dative: "их",
+        accusative: "их",
+        instrumental: "их",
+        prepositional: "их",
+      },
+      neuter: {
+        nominative: "их",
+        genitive: "их",
+        dative: "их",
+        accusative: "их",
+        instrumental: "их",
+        prepositional: "их",
+      },
+    },
+    plural: {
+      nominative: "их",
+      genitive: "их",
+      dative: "их",
+      accusative: "их",
+      instrumental: "их",
+      prepositional: "их",
+    },
     all: "их",
   },
 }
@@ -637,7 +765,7 @@ const personalPronounExamples = {
 }
 
 // Examples for possessive pronouns
-const possessivePronounExamples = {
+const possessivePronounExamples: Record<PossessiveType, any> = {
   my: {
     singular: {
       masculine: {
@@ -819,13 +947,115 @@ const possessivePronounExamples = {
     },
   },
   his: {
+    singular: {
+      masculine: {
+        nominative: "Это его книга. (Не изменяется)",
+        genitive: "Это его книга. (Не изменяется)",
+        dative: "Это его книга. (Не изменяется)",
+        accusative: "Это его книга. (Не изменяется)",
+        instrumental: "Это его книга. (Не изменяется)",
+        prepositional: "Это его книга. (Не изменяется)",
+      },
+      feminine: {
+        nominative: "Это его книга. (Не изменяется)",
+        genitive: "Это его книга. (Не изменяется)",
+        dative: "Это его книга. (Не изменяется)",
+        accusative: "Это его книга. (Не изменяется)",
+        instrumental: "Это его книга. (Не изменяется)",
+        prepositional: "Это его книга. (Не изменяется)",
+      },
+      neuter: {
+        nominative: "Это его книга. (Не изменяется)",
+        genitive: "Это его книга. (Не изменяется)",
+        dative: "Это его книга. (Не изменяется)",
+        accusative: "Это его книга. (Не изменяется)",
+        instrumental: "Это его книга. (Не изменяется)",
+        prepositional: "Это его книга. (Не изменяется)",
+      },
+    },
+    plural: {
+      nominative: "Это его книга. (Не изменяется)",
+      genitive: "Это его книга. (Не изменяется)",
+      dative: "Это его книга. (Не изменяется)",
+      accusative: "Это его книга. (Не изменяется)",
+      instrumental: "Это его книга. (Не изменяется)",
+      prepositional: "Это его книга. (Не изменяется)",
+    },
     all: "Это его книга. (Не изменяется)",
   },
   her: {
-    all: "Это её сумка. (Не изменяется)",
+    singular: {
+      masculine: {
+        nominative: "Это её книга. (Не изменяется)",
+        genitive: "Это её книга. (Не изменяется)",
+        dative: "Это её книга. (Не изменяется)",
+        accusative: "Это её книга. (Не изменяется)",
+        instrumental: "Это её книга. (Не изменяется)",
+        prepositional: "Это её книга. (Не изменяется)",
+      },
+      feminine: {
+        nominative: "Это её книга. (Не изменяется)",
+        genitive: "Это её книга. (Не изменяется)",
+        dative: "Это её книга. (Не изменяется)",
+        accusative: "Это её книга. (Не изменяется)",
+        instrumental: "Это её книга. (Не изменяется)",
+        prepositional: "Это её книга. (Не изменяется)",
+      },
+      neuter: {
+        nominative: "Это её книга. (Не изменяется)",
+        genitive: "Это её книга. (Не изменяется)",
+        dative: "Это её книга. (Не изменяется)",
+        accusative: "Это её книга. (Не изменяется)",
+        instrumental: "Это её книга. (Не изменяется)",
+        prepositional: "Это её книга. (Не изменяется)",
+      },
+    },
+    plural: {
+      nominative: "Это её книга. (Не изменяется)",
+      genitive: "Это её книга. (Не изменяется)",
+      dative: "Это её книга. (Не изменяется)",
+      accusative: "Это её книга. (Не изменяется)",
+      instrumental: "Это её книга. (Не изменяется)",
+      prepositional: "Это её книга. (Не изменяется)",
+    },
+    all: "Это её книга. (Не изменяется)",
   },
   their: {
-    all: "Это их дом. (Не изменяется)",
+    singular: {
+      masculine: {
+        nominative: "Это их книга. (Не изменяется)",
+        genitive: "Это их книга. (Не изменяется)",
+        dative: "Это их книга. (Не изменяется)",
+        accusative: "Это их книга. (Не изменяется)",
+        instrumental: "Это их книга. (Не изменяется)",
+        prepositional: "Это их книга. (Не изменяется)",
+      },
+      feminine: {
+        nominative: "Это их книга. (Не изменяется)",
+        genitive: "Это их книга. (Не изменяется)",
+        dative: "Это их книга. (Не изменяется)",
+        accusative: "Это их книга. (Не изменяется)",
+        instrumental: "Это их книга. (Не изменяется)",
+        prepositional: "Это их книга. (Не изменяется)",
+      },
+      neuter: {
+        nominative: "Это их книга. (Не изменяется)",
+        genitive: "Это их книга. (Не изменяется)",
+        dative: "Это их книга. (Не изменяется)",
+        accusative: "Это их книга. (Не изменяется)",
+        instrumental: "Это их книга. (Не изменяется)",
+        prepositional: "Это их книга. (Не изменяется)",
+      },
+    },
+    plural: {
+      nominative: "Это их книга. (Не изменяется)",
+      genitive: "Это их книга. (Не изменяется)",
+      dative: "Это их книга. (Не изменяется)",
+      accusative: "Это их книга. (Не изменяется)",
+      instrumental: "Это их книга. (Не изменяется)",
+      prepositional: "Это их книга. (Не изменяется)",
+    },
+    all: "Это их книга. (Не изменяется)",
   },
 }
 
@@ -1036,6 +1266,7 @@ const negativePronounExamples = {
 // Examples for reflexive pronouns
 const reflexivePronounExamples = {
   oneself: {
+    nominative: "-",
     genitive: "Думаю только о себе.",
     dative: "Купил себе книгу.",
     accusative: "Вижу себя в зеркале.",
@@ -1043,6 +1274,7 @@ const reflexivePronounExamples = {
     prepositional: "Думаю о себе.",
   },
   each_other: {
+    nominative: "-",
     genitive: "Они думают друг о друге.",
     dative: "Они пишут друг другу.",
     accusative: "Они видят друг друга.",
@@ -1057,34 +1289,32 @@ export default function PronounDeclensionTable() {
   const [hiddenEndings, setHiddenEndings] = useState<Record<string, boolean>>({})
 
   // For personal pronouns
-  const [personNumber, setPersonNumber] = useState<"singular" | "plural">("singular")
-  const [person, setPerson] = useState<"first" | "second" | "third">("first")
-  const [thirdPersonGender, setThirdPersonGender] = useState<"masculine" | "feminine" | "neuter">("masculine")
+  const [personNumber, setPersonNumber] = useState<PersonNumber>("singular")
+  const [person, setPerson] = useState<Person>("first")
+  const [thirdPersonGender, setThirdPersonGender] = useState<Gender>("masculine")
 
   // For possessive pronouns
-  const [possessiveType, setPossessiveType] = useState<
-    "my" | "your" | "our" | "your_plural" | "reflexive" | "his" | "her" | "their"
-  >("my")
-  const [possessiveNumber, setPossessiveNumber] = useState<"singular" | "plural">("singular")
-  const [possessiveGender, setPossessiveGender] = useState<"masculine" | "feminine" | "neuter">("masculine")
+  const [possessiveType, setPossessiveType] = useState<PossessiveType>("my")
+  const [possessiveNumber, setPossessiveNumber] = useState<PersonNumber>("singular")
+  const [possessiveGender, setPossessiveGender] = useState<Gender>("masculine")
 
   // For demonstrative pronouns
-  const [demonstrativeType, setDemonstrativeType] = useState<"this" | "that">("this")
-  const [demonstrativeNumber, setDemonstrativeNumber] = useState<"singular" | "plural">("singular")
-  const [demonstrativeGender, setDemonstrativeGender] = useState<"masculine" | "feminine" | "neuter">("masculine")
+  const [demonstrativeType, setDemonstrativeType] = useState<DemonstrativeType>("this")
+  const [demonstrativeNumber, setDemonstrativeNumber] = useState<PersonNumber>("singular")
+  const [demonstrativeGender, setDemonstrativeGender] = useState<Gender>("masculine")
 
   // For interrogative pronouns
-  const [interrogativeType, setInterrogativeType] = useState<"who" | "what" | "which" | "whose">("who")
-  const [interrogativeNumber, setInterrogativeNumber] = useState<"singular" | "plural">("singular")
-  const [interrogativeGender, setInterrogativeGender] = useState<"masculine" | "feminine" | "neuter">("masculine")
+  const [interrogativeType, setInterrogativeType] = useState<InterrogativeType>("who")
+  const [interrogativeNumber, setInterrogativeNumber] = useState<PersonNumber>("singular")
+  const [interrogativeGender, setInterrogativeGender] = useState<Gender>("masculine")
 
   // For negative pronouns
-  const [negativeType, setNegativeType] = useState<"nobody" | "nothing" | "no_one_to" | "nothing_to">("nobody")
+  const [negativeType, setNegativeType] = useState<NegativeType>("nobody")
 
   // For reflexive pronouns
-  const [reflexiveType, setReflexiveType] = useState<"oneself" | "each_other">("oneself")
+  const [reflexiveType, setReflexiveType] = useState<ReflexiveType>("oneself")
 
-  const cases = ["nominative", "genitive", "dative", "accusative", "instrumental", "prepositional"]
+  const cases: Case[] = ["nominative", "genitive", "dative", "accusative", "instrumental", "prepositional"]
   const caseTranslations = {
     nominative: "Именительный",
     genitive: "Родительный",
@@ -1182,35 +1412,22 @@ export default function PronounDeclensionTable() {
 
                 if (personNumber === "singular") {
                   if (person === "third") {
-                    pronoun =
-                      personalPronouns.singular.third[thirdPersonGender][
-                        caseType as keyof typeof personalPronouns.singular.third.masculine
-                      ]
-                    example =
-                      personalPronounExamples.singular.third[thirdPersonGender][
-                        caseType as keyof typeof personalPronounExamples.singular.third.masculine
-                      ]
+                    pronoun = personalPronouns.singular.third[thirdPersonGender][caseType]
+                    example = personalPronounExamples.singular.third[thirdPersonGender][caseType]
                   } else {
-                    pronoun =
-                      personalPronouns.singular[person][caseType as keyof typeof personalPronouns.singular.first]
-                    example =
-                      personalPronounExamples.singular[person][
-                        caseType as keyof typeof personalPronounExamples.singular.first
-                      ]
+                    pronoun = personalPronouns.singular[person][caseType]
+                    example = personalPronounExamples.singular[person][caseType]
                   }
                 } else {
-                  pronoun = personalPronouns.plural[person][caseType as keyof typeof personalPronouns.plural.first]
-                  example =
-                    personalPronounExamples.plural[person][
-                      caseType as keyof typeof personalPronounExamples.plural.first
-                    ]
+                  pronoun = personalPronouns.plural[person][caseType]
+                  example = personalPronounExamples.plural[person][caseType]
                 }
 
                 const key = `${caseType}_personal`
                 return (
                   <TableRow key={caseType}>
                     <TableCell className="font-medium">
-                      {caseTranslations[caseType as keyof typeof caseTranslations]}
+                      {caseTranslations[caseType]}
                       <div className="text-xs text-muted-foreground">{caseType}</div>
                     </TableCell>
                     <TableCell onClick={() => toggleEndingVisibility(caseType, "personal")}>
@@ -1235,7 +1452,6 @@ export default function PronounDeclensionTable() {
     )
   }
 
-  // Update the renderPossessivePronounTable function to handle feminine and neuter accusative cases correctly
   const renderPossessivePronounTable = () => {
     return (
       <div className="space-y-6">
@@ -1329,30 +1545,24 @@ export default function PronounDeclensionTable() {
                   <TableRow>
                     <TableHead className="w-[150px]">Case</TableHead>
                     <TableHead>Pronoun</TableHead>
+                    {showExamples && <TableHead>Example</TableHead>}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {cases.map((caseType) => {
                     let pronoun
+                    let example
 
                     if (possessiveNumber === "singular") {
-                      if (caseType === "accusative") {
-                        if (possessiveGender === "masculine") {
-                          pronoun = {
-                            animate: possessivePronouns[possessiveType].singular[possessiveGender].accusative.animate,
-                            inanimate:
-                              possessivePronouns[possessiveType].singular[possessiveGender].accusative.inanimate,
-                          }
-                        } else {
-                          // For feminine and neuter, accusative is a string
-                          pronoun = possessivePronouns[possessiveType].singular[possessiveGender].accusative
+                      if (caseType === "accusative" && possessiveGender === "masculine") {
+                        pronoun = {
+                          animate: possessivePronouns[possessiveType].singular[possessiveGender].accusative.animate,
+                          inanimate: possessivePronouns[possessiveType].singular[possessiveGender].accusative.inanimate,
                         }
                       } else {
-                        pronoun =
-                          possessivePronouns[possessiveType].singular[possessiveGender][
-                            caseType as keyof typeof possessivePronouns.my.singular.masculine
-                          ]
+                        pronoun = possessivePronouns[possessiveType].singular[possessiveGender][caseType]
                       }
+                      example = possessivePronounExamples[possessiveType].singular[possessiveGender][caseType]
                     } else {
                       if (caseType === "accusative") {
                         pronoun = {
@@ -1360,28 +1570,16 @@ export default function PronounDeclensionTable() {
                           inanimate: possessivePronouns[possessiveType].plural.accusative.inanimate,
                         }
                       } else {
-                        pronoun =
-                          possessivePronouns[possessiveType].plural[
-                            caseType as keyof typeof possessivePronouns.my.plural
-                          ]
+                        pronoun = possessivePronouns[possessiveType].plural[caseType]
                       }
+                      example = possessivePronounExamples[possessiveType].plural[caseType]
                     }
 
                     const key = `${caseType}_possessive`
-                    let example: string | undefined
-                    
-                    if (["his", "her", "their"].includes(possessiveType)) {
-                      example = possessivePronounExamples[possessiveType].singular.masculine[caseType]
-                    } else if (possessiveNumber === "singular") {
-                      example = possessivePronounExamples[possessiveType].singular[possessiveGender][caseType]
-                    } else {
-                      example = possessivePronounExamples[possessiveType].plural[caseType]
-                    }
-                    
                     return (
                       <TableRow key={caseType}>
                         <TableCell className="font-medium">
-                          {caseTranslations[caseType as keyof typeof caseTranslations]}
+                          {caseTranslations[caseType]}
                           <div className="text-xs text-muted-foreground">{caseType}</div>
                         </TableCell>
                         <TableCell onClick={() => toggleEndingVisibility(caseType, "possessive")}>
@@ -1405,10 +1603,8 @@ export default function PronounDeclensionTable() {
                           )}
                         </TableCell>
                         {showExamples && (
-      <TableCell>
-        {!hiddenEndings[key] && <div className="text-sm">{example}</div>}
-      </TableCell>
-    )}
+                          <TableCell>{!hiddenEndings[key] && <div className="text-sm">{example}</div>}</TableCell>
+                        )}
                       </TableRow>
                     )
                   })}
@@ -1421,7 +1617,6 @@ export default function PronounDeclensionTable() {
     )
   }
 
-  // Update the renderDemonstrativePronounTable function to handle feminine and neuter accusative cases correctly
   const renderDemonstrativePronounTable = () => {
     return (
       <div className="space-y-6">
@@ -1484,31 +1679,26 @@ export default function PronounDeclensionTable() {
               <TableRow>
                 <TableHead className="w-[150px]">Case</TableHead>
                 <TableHead>Pronoun</TableHead>
+                {showExamples && <TableHead>Example</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>
               {cases.map((caseType) => {
                 let pronoun
+                let example
 
                 if (demonstrativeNumber === "singular") {
-                  if (caseType === "accusative") {
-                    if (demonstrativeGender === "masculine") {
-                      pronoun = {
-                        animate:
-                          demonstrativePronouns[demonstrativeType].singular[demonstrativeGender].accusative.animate,
-                        inanimate:
-                          demonstrativePronouns[demonstrativeType].singular[demonstrativeGender].accusative.inanimate,
-                      }
-                    } else {
-                      // For feminine and neuter, accusative is a string
-                      pronoun = demonstrativePronouns[demonstrativeType].singular[demonstrativeGender].accusative
+                  if (caseType === "accusative" && demonstrativeGender === "masculine") {
+                    pronoun = {
+                      animate:
+                        demonstrativePronouns[demonstrativeType].singular[demonstrativeGender].accusative.animate,
+                      inanimate:
+                        demonstrativePronouns[demonstrativeType].singular[demonstrativeGender].accusative.inanimate,
                     }
                   } else {
-                    pronoun =
-                      demonstrativePronouns[demonstrativeType].singular[demonstrativeGender][
-                        caseType as keyof typeof demonstrativePronouns.this.singular.masculine
-                      ]
+                    pronoun = demonstrativePronouns[demonstrativeType].singular[demonstrativeGender][caseType]
                   }
+                  example = demonstrativePronounExamples[demonstrativeType].singular[demonstrativeGender][caseType]
                 } else {
                   if (caseType === "accusative") {
                     pronoun = {
@@ -1516,26 +1706,16 @@ export default function PronounDeclensionTable() {
                       inanimate: demonstrativePronouns[demonstrativeType].plural.accusative.inanimate,
                     }
                   } else {
-                    pronoun =
-                      demonstrativePronouns[demonstrativeType].plural[
-                        caseType as keyof typeof demonstrativePronouns.this.plural
-                      ]
+                    pronoun = demonstrativePronouns[demonstrativeType].plural[caseType]
                   }
+                  example = demonstrativePronounExamples[demonstrativeType].plural[caseType]
                 }
 
                 const key = `${caseType}_demonstrative`
-                let example: string
-                
-                if (demonstrativeNumber === "singular") {
-                  example = demonstrativePronounExamples[demonstrativeType].singular[demonstrativeGender][caseType]
-                } else {
-                  example = demonstrativePronounExamples[demonstrativeType].plural[caseType]
-                }
-                
                 return (
                   <TableRow key={caseType}>
                     <TableCell className="font-medium">
-                      {caseTranslations[caseType as keyof typeof caseTranslations]}
+                      {caseTranslations[caseType]}
                       <div className="text-xs text-muted-foreground">{caseType}</div>
                     </TableCell>
                     <TableCell onClick={() => toggleEndingVisibility(caseType, "demonstrative")}>
@@ -1559,10 +1739,8 @@ export default function PronounDeclensionTable() {
                       )}
                     </TableCell>
                     {showExamples && (
-      <TableCell>
-        {!hiddenEndings[key] && <div className="text-sm">{example}</div>}
-      </TableCell>
-    )}
+                      <TableCell>{!hiddenEndings[key] && <div className="text-sm">{example}</div>}</TableCell>
+                    )}
                   </TableRow>
                 )
               })}
@@ -1573,7 +1751,6 @@ export default function PronounDeclensionTable() {
     )
   }
 
-  // Update the renderInterrogativePronounTable function to handle feminine and neuter accusative cases correctly
   const renderInterrogativePronounTable = () => {
     return (
       <div className="space-y-6">
@@ -1652,34 +1829,30 @@ export default function PronounDeclensionTable() {
               <TableRow>
                 <TableHead className="w-[150px]">Case</TableHead>
                 <TableHead>Pronoun</TableHead>
+                {showExamples && <TableHead>Example</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>
               {cases.map((caseType) => {
                 let pronoun
+                let example
 
                 if (interrogativeType === "who" || interrogativeType === "what") {
-                  pronoun = interrogativePronouns[interrogativeType][caseType as keyof typeof interrogativePronouns.who]
+                  pronoun = interrogativePronouns[interrogativeType][caseType]
+                  example = interrogativePronounExamples[interrogativeType][caseType]
                 } else {
                   if (interrogativeNumber === "singular") {
-                    if (caseType === "accusative") {
-                      if (interrogativeGender === "masculine") {
-                        pronoun = {
-                          animate:
-                            interrogativePronouns[interrogativeType].singular[interrogativeGender].accusative.animate,
-                          inanimate:
-                            interrogativePronouns[interrogativeType].singular[interrogativeGender].accusative.inanimate,
-                        }
-                      } else {
-                        // For feminine and neuter, accusative is a string
-                        pronoun = interrogativePronouns[interrogativeType].singular[interrogativeGender].accusative
+                    if (caseType === "accusative" && interrogativeGender === "masculine") {
+                      pronoun = {
+                        animate:
+                          interrogativePronouns[interrogativeType].singular[interrogativeGender].accusative.animate,
+                        inanimate:
+                          interrogativePronouns[interrogativeType].singular[interrogativeGender].accusative.inanimate,
                       }
                     } else {
-                      pronoun =
-                        interrogativePronouns[interrogativeType].singular[interrogativeGender][
-                          caseType as keyof typeof interrogativePronouns.which.singular.masculine
-                        ]
+                      pronoun = interrogativePronouns[interrogativeType].singular[interrogativeGender][caseType]
                     }
+                    example = interrogativePronounExamples[interrogativeType].singular[interrogativeGender][caseType]
                   } else {
                     if (caseType === "accusative") {
                       pronoun = {
@@ -1687,29 +1860,17 @@ export default function PronounDeclensionTable() {
                         inanimate: interrogativePronouns[interrogativeType].plural.accusative.inanimate,
                       }
                     } else {
-                      pronoun =
-                        interrogativePronouns[interrogativeType].plural[
-                          caseType as keyof typeof interrogativePronouns.which.plural
-                        ]
+                      pronoun = interrogativePronouns[interrogativeType].plural[caseType]
                     }
+                    example = interrogativePronounExamples[interrogativeType].plural[caseType]
                   }
                 }
 
                 const key = `${caseType}_interrogative`
-                let example: string
-                
-                if (interrogativeType === "who" || interrogativeType === "what") {
-                  example = interrogativePronounExamples[interrogativeType][caseType as keyof typeof interrogativePronounExamples.who]
-                } else if (interrogativeNumber === "singular") {
-                  example = interrogativePronounExamples[interrogativeType].singular[interrogativeGender][caseType]
-                } else {
-                  example = interrogativePronounExamples[interrogativeType].plural[caseType]
-                }
-                
                 return (
                   <TableRow key={caseType}>
                     <TableCell className="font-medium">
-                      {caseTranslations[caseType as keyof typeof caseTranslations]}
+                      {caseTranslations[caseType]}
                       <div className="text-xs text-muted-foreground">{caseType}</div>
                     </TableCell>
                     <TableCell onClick={() => toggleEndingVisibility(caseType, "interrogative")}>
@@ -1735,10 +1896,8 @@ export default function PronounDeclensionTable() {
                       )}
                     </TableCell>
                     {showExamples && (
-      <TableCell>
-        {!hiddenEndings[key] && <div className="text-sm">{example}</div>}
-      </TableCell>
-    )}
+                      <TableCell>{!hiddenEndings[key] && <div className="text-sm">{example}</div>}</TableCell>
+                    )}
                   </TableRow>
                 )
               })}
@@ -1782,18 +1941,19 @@ export default function PronounDeclensionTable() {
               <TableRow>
                 <TableHead className="w-[150px]">Case</TableHead>
                 <TableHead>Pronoun</TableHead>
+                {showExamples && <TableHead>Example</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>
               {cases.map((caseType) => {
-                const pronoun = negativePronouns[negativeType][caseType as keyof typeof negativePronouns.nobody]
+                const pronoun = negativePronouns[negativeType][caseType]
                 const key = `${caseType}_negative`
-                const example = negativePronounExamples[negativeType][caseType as keyof typeof negativePronounExamples.nobody]
-                
+                const example = negativePronounExamples[negativeType][caseType]
+
                 return (
                   <TableRow key={caseType}>
                     <TableCell className="font-medium">
-                      {caseTranslations[caseType as keyof typeof caseTranslations]}
+                      {caseTranslations[caseType]}
                       <div className="text-xs text-muted-foreground">{caseType}</div>
                     </TableCell>
                     <TableCell onClick={() => toggleEndingVisibility(caseType, "negative")}>
@@ -1806,10 +1966,8 @@ export default function PronounDeclensionTable() {
                       )}
                     </TableCell>
                     {showExamples && (
-      <TableCell>
-        {!hiddenEndings[key] && <div className="text-sm">{example}</div>}
-      </TableCell>
-    )}
+                      <TableCell>{!hiddenEndings[key] && <div className="text-sm">{example}</div>}</TableCell>
+                    )}
                   </TableRow>
                 )
               })}
@@ -1844,18 +2002,19 @@ export default function PronounDeclensionTable() {
               <TableRow>
                 <TableHead className="w-[150px]">Case</TableHead>
                 <TableHead>Pronoun</TableHead>
+                {showExamples && <TableHead>Example</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>
               {cases.map((caseType) => {
-                const pronoun = reflexivePronouns[reflexiveType][caseType as keyof typeof reflexivePronouns.oneself]
+                const pronoun = reflexivePronouns[reflexiveType][caseType]
                 const key = `${caseType}_reflexive`
-                const example = reflexivePronounExamples[reflexiveType][caseType as keyof typeof reflexivePronounExamples.oneself]
-                
+                const example = reflexivePronounExamples[reflexiveType][caseType]
+
                 return (
                   <TableRow key={caseType}>
                     <TableCell className="font-medium">
-                      {caseTranslations[caseType as keyof typeof caseTranslations]}
+                      {caseTranslations[caseType]}
                       <div className="text-xs text-muted-foreground">{caseType}</div>
                     </TableCell>
                     <TableCell onClick={() => toggleEndingVisibility(caseType, "reflexive")}>
@@ -1868,10 +2027,8 @@ export default function PronounDeclensionTable() {
                       )}
                     </TableCell>
                     {showExamples && (
-      <TableCell>
-        {!hiddenEndings[key] && <div className="text-sm">{example}</div>}
-      </TableCell>
-    )}
+                      <TableCell>{!hiddenEndings[key] && <div className="text-sm">{example}</div>}</TableCell>
+                    )}
                   </TableRow>
                 )
               })}
