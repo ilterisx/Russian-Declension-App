@@ -6,25 +6,25 @@ import { Github } from "lucide-react"
 import NounDeclensionTable from "@/components/noun-declension-table"
 import AdjectiveDeclensionTable from "@/components/adjective-declension-table"
 import PronounDeclensionTable from "@/components/pronoun-declension-table"
+import PrepositionTable from "@/components/preposition-table"
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <div className="container mx-auto py-8 px-4">
         <header className="mb-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2 text-slate-900 dark:text-slate-50">
-            Russian Declensions 
-          </h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-2 text-slate-900 dark:text-slate-50">Russian Declensions</h1>
           <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
             last update: 19/03/2025, contact: <a href="mailto:ilterisch@yandex.ru">ilterisch@yandex.ru</a>
           </p>
         </header>
 
         <Tabs defaultValue="nouns" className="max-w-4xl mx-auto">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
+          <TabsList className="grid w-full grid-cols-4 mb-8">
             <TabsTrigger value="nouns">Noun Endings</TabsTrigger>
             <TabsTrigger value="adjectives">Adjective Endings</TabsTrigger>
             <TabsTrigger value="pronouns">Pronouns</TabsTrigger>
+            <TabsTrigger value="prepositions">Prepositions</TabsTrigger>
           </TabsList>
 
           <TabsContent value="nouns" className="mt-0">
@@ -63,6 +63,18 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <PronounDeclensionTable />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="prepositions" className="mt-0">
+            <Card>
+              <CardHeader>
+                <CardTitle>Russian Prepositions</CardTitle>
+                <CardDescription>Reference for prepositions and their required grammatical cases</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <PrepositionTable />
               </CardContent>
             </Card>
           </TabsContent>

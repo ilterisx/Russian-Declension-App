@@ -636,9 +636,424 @@ const personalPronounExamples = {
   },
 }
 
+// Examples for possessive pronouns
+const possessivePronounExamples = {
+  my: {
+    singular: {
+      masculine: {
+        nominative: "Мой дом красивый.",
+        genitive: "Нет моего дома.",
+        dative: "Иду к моему дому.",
+        accusative: "Вижу мой дом (неодуш.) / моего кота (одуш.).",
+        instrumental: "Горжусь моим домом.",
+        prepositional: "Думаю о моём доме.",
+      },
+      feminine: {
+        nominative: "Моя книга интересная.",
+        genitive: "Нет моей книги.",
+        dative: "Иду к моей книге.",
+        accusative: "Вижу мою книгу.",
+        instrumental: "Пишу моей ручкой.",
+        prepositional: "Думаю о моей книге.",
+      },
+      neuter: {
+        nominative: "Моё окно открыто.",
+        genitive: "Нет моего окна.",
+        dative: "Иду к моему окну.",
+        accusative: "Вижу моё окно.",
+        instrumental: "Смотрю через моё окно.",
+        prepositional: "Думаю о моём окне.",
+      },
+    },
+    plural: {
+      nominative: "Мои друзья здесь.",
+      genitive: "Нет моих друзей.",
+      dative: "Иду к моим друзьям.",
+      accusative: "Вижу моих друзей (одуш.) / мои книги (неодуш.).",
+      instrumental: "Общаюсь с моими друзьями.",
+      prepositional: "Думаю о моих друзьях.",
+    },
+  },
+  your: {
+    singular: {
+      masculine: {
+        nominative: "Твой телефон звонит.",
+        genitive: "Нет твоего телефона.",
+        dative: "Иду к твоему телефону.",
+        accusative: "Вижу твой телефон (неодуш.) / твоего кота (одуш.).",
+        instrumental: "Пользуюсь твоим телефоном.",
+        prepositional: "Думаю о твоём телефоне.",
+      },
+      feminine: {
+        nominative: "Твоя сумка тяжёлая.",
+        genitive: "Нет твоей сумки.",
+        dative: "Иду к твоей сумке.",
+        accusative: "Вижу твою сумку.",
+        instrumental: "Несу твоей сумкой.",
+        prepositional: "Думаю о твоей сумке.",
+      },
+      neuter: {
+        nominative: "Твоё письмо пришло.",
+        genitive: "Нет твоего письма.",
+        dative: "Иду к твоему письму.",
+        accusative: "Вижу твоё письмо.",
+        instrumental: "Пишу твоим пером.",
+        prepositional: "Думаю о твоём письме.",
+      },
+    },
+    plural: {
+      nominative: "Твои идеи интересные.",
+      genitive: "Нет твоих идей.",
+      dative: "Иду к твоим идеям.",
+      accusative: "Вижу твоих коллег (одуш.) / твои идеи (неодуш.).",
+      instrumental: "Вдохновляюсь твоими идеями.",
+      prepositional: "Думаю о твоих идеях.",
+    },
+  },
+  our: {
+    singular: {
+      masculine: {
+        nominative: "Наш город прекрасен.",
+        genitive: "Нет нашего города.",
+        dative: "Иду к нашему городу.",
+        accusative: "Вижу наш город (неодуш.) / нашего соседа (одуш.).",
+        instrumental: "Горжусь нашим городом.",
+        prepositional: "Думаю о нашем городе.",
+      },
+      feminine: {
+        nominative: "Наша команда сильная.",
+        genitive: "Нет нашей команды.",
+        dative: "Иду к нашей команде.",
+        accusative: "Вижу нашу команду.",
+        instrumental: "Работаю с нашей командой.",
+        prepositional: "Думаю о нашей команде.",
+      },
+      neuter: {
+        nominative: "Наше решение правильное.",
+        genitive: "Нет нашего решения.",
+        dative: "Иду к нашему решению.",
+        accusative: "Вижу наше решение.",
+        instrumental: "Доволен нашим решением.",
+        prepositional: "Думаю о нашем решении.",
+      },
+    },
+    plural: {
+      nominative: "Наши дети учатся.",
+      genitive: "Нет наших детей.",
+      dative: "Иду к нашим детям.",
+      accusative: "Вижу наших детей (одуш.) / наши книги (неодуш.).",
+      instrumental: "Горжусь нашими детьми.",
+      prepositional: "Думаю о наших детях.",
+    },
+  },
+  your_plural: {
+    singular: {
+      masculine: {
+        nominative: "Ваш документ готов.",
+        genitive: "Нет вашего документа.",
+        dative: "Иду к вашему документу.",
+        accusative: "Вижу ваш документ (неодуш.) / вашего сотрудника (одуш.).",
+        instrumental: "Подписываю вашим документом.",
+        prepositional: "Думаю о вашем документе.",
+      },
+      feminine: {
+        nominative: "Ваша машина новая.",
+        genitive: "Нет вашей машины.",
+        dative: "Иду к вашей машине.",
+        accusative: "Вижу вашу машину.",
+        instrumental: "Еду вашей машиной.",
+        prepositional: "Думаю о вашей машине.",
+      },
+      neuter: {
+        nominative: "Ваше предложение принято.",
+        genitive: "Нет вашего предложения.",
+        dative: "Иду к вашему предложению.",
+        accusative: "Вижу ваше предложение.",
+        instrumental: "Доволен вашим предложением.",
+        prepositional: "Думаю о вашем предложении.",
+      },
+    },
+    plural: {
+      nominative: "Ваши друзья добрые.",
+      genitive: "Нет ваших друзей.",
+      dative: "Иду к вашим друзьям.",
+      accusative: "Вижу ваших друзей (одуш.) / ваши идеи (неодуш.).",
+      instrumental: "Общаюсь с вашими друзьями.",
+      prepositional: "Думаю о ваших друзьях.",
+    },
+  },
+  reflexive: {
+    singular: {
+      masculine: {
+        nominative: "Сын взял свой рюкзак.",
+        genitive: "Нет своего рюкзака.",
+        dative: "Иду к своему рюкзаку.",
+        accusative: "Вижу свой рюкзак (неодуш.) / своего друга (одуш.).",
+        instrumental: "Пользуюсь своим рюкзаком.",
+        prepositional: "Думаю о своём рюкзаке.",
+      },
+      feminine: {
+        nominative: "Дочь взяла свою сумку.",
+        genitive: "Нет своей сумки.",
+        dative: "Иду к своей сумке.",
+        accusative: "Вижу свою сумку.",
+        instrumental: "Пользуюсь своей сумкой.",
+        prepositional: "Думаю о своей сумке.",
+      },
+      neuter: {
+        nominative: "Солнце скрыло своё лицо.",
+        genitive: "Нет своего места.",
+        dative: "Иду к своему месту.",
+        accusative: "Вижу своё место.",
+        instrumental: "Доволен своим местом.",
+        prepositional: "Думаю о своём месте.",
+      },
+    },
+    plural: {
+      nominative: "Дети взяли свои вещи.",
+      genitive: "Нет своих вещей.",
+      dative: "Иду к своим вещам.",
+      accusative: "Вижу своих друзей (одуш.) / свои вещи (неодуш.).",
+      instrumental: "Доволен своими вещами.",
+      prepositional: "Думаю о своих вещах.",
+    },
+  },
+  his: {
+    all: "Это его книга. (Не изменяется)",
+  },
+  her: {
+    all: "Это её сумка. (Не изменяется)",
+  },
+  their: {
+    all: "Это их дом. (Не изменяется)",
+  },
+}
+
+// Examples for demonstrative pronouns
+const demonstrativePronounExamples = {
+  this: {
+    singular: {
+      masculine: {
+        nominative: "Этот человек добрый.",
+        genitive: "Нет этого человека.",
+        dative: "Иду к этому человеку.",
+        accusative: "Вижу этот дом (неодуш.) / этого человека (одуш.).",
+        instrumental: "Разговариваю с этим человеком.",
+        prepositional: "Думаю об этом человеке.",
+      },
+      feminine: {
+        nominative: "Эта книга интересная.",
+        genitive: "Нет этой книги.",
+        dative: "Иду к этой книге.",
+        accusative: "Вижу эту книгу.",
+        instrumental: "Пользуюсь этой книгой.",
+        prepositional: "Думаю об этой книге.",
+      },
+      neuter: {
+        nominative: "Это окно открыто.",
+        genitive: "Нет этого окна.",
+        dative: "Иду к этому окну.",
+        accusative: "Вижу это окно.",
+        instrumental: "Смотрю через это окно.",
+        prepositional: "Думаю об этом окне.",
+      },
+    },
+    plural: {
+      nominative: "Эти люди добрые.",
+      genitive: "Нет этих людей.",
+      dative: "Иду к этим людям.",
+      accusative: "Вижу этих людей (одуш.) / эти дома (неодуш.).",
+      instrumental: "Общаюсь с этими людьми.",
+      prepositional: "Думаю об этих людях.",
+    },
+  },
+  that: {
+    singular: {
+      masculine: {
+        nominative: "Тот дом далёкий.",
+        genitive: "Нет того дома.",
+        dative: "Иду к тому дому.",
+        accusative: "Вижу тот дом (неодуш.) / того человека (одуш.).",
+        instrumental: "Любуюсь тем домом.",
+        prepositional: "Думаю о том доме.",
+      },
+      feminine: {
+        nominative: "Та гора высокая.",
+        genitive: "Нет той горы.",
+        dative: "Иду к той горе.",
+        accusative: "Вижу ту гору.",
+        instrumental: "Восхищаюсь той горой.",
+        prepositional: "Думаю о той горе.",
+      },
+      neuter: {
+        nominative: "То здание старое.",
+        genitive: "Нет того здания.",
+        dative: "Иду к тому зданию.",
+        accusative: "Вижу то здание.",
+        instrumental: "Интересуюсь тем зданием.",
+        prepositional: "Думаю о том здании.",
+      },
+    },
+    plural: {
+      nominative: "Те деревья высокие.",
+      genitive: "Нет тех деревьев.",
+      dative: "Иду к тем деревьям.",
+      accusative: "Вижу тех птиц (одуш.) / те деревья (неодуш.).",
+      instrumental: "Любуюсь теми деревьями.",
+      prepositional: "Думаю о тех деревьях.",
+    },
+  },
+}
+
+// Examples for interrogative pronouns
+const interrogativePronounExamples = {
+  who: {
+    nominative: "Кто это?",
+    genitive: "У кого это?",
+    dative: "Кому это дать?",
+    accusative: "Кого вы видите?",
+    instrumental: "С кем вы говорили?",
+    prepositional: "О ком вы думаете?",
+  },
+  what: {
+    nominative: "Что это?",
+    genitive: "Чего ты боишься?",
+    dative: "Чему ты учишься?",
+    accusative: "Что ты видишь?",
+    instrumental: "Чем ты пишешь?",
+    prepositional: "О чём ты мечтаешь?",
+  },
+  which: {
+    singular: {
+      masculine: {
+        nominative: "Какой фильм смотреть?",
+        genitive: "Какого фильма не хватает?",
+        dative: "Какому фильму отдать предпочтение?",
+        accusative: "Какой фильм выбрать (неодуш.) / Какого актёра пригласить (одуш.)?",
+        instrumental: "С каким фильмом сравнивать?",
+        prepositional: "О каком фильме речь?",
+      },
+      feminine: {
+        nominative: "Какая книга интересная?",
+        genitive: "Какой книги не хватает?",
+        dative: "Какой книге отдать предпочтение?",
+        accusative: "Какую книгу выбрать?",
+        instrumental: "С какой книгой сравнивать?",
+        prepositional: "О какой книге речь?",
+      },
+      neuter: {
+        nominative: "Какое решение правильное?",
+        genitive: "Какого решения не хватает?",
+        dative: "Какому решению следовать?",
+        accusative: "Какое решение принять?",
+        instrumental: "С каким решением согласиться?",
+        prepositional: "О каком решении речь?",
+      },
+    },
+    plural: {
+      nominative: "Какие цветы красивые?",
+      genitive: "Каких цветов не хватает?",
+      dative: "Каким цветам нужно больше света?",
+      accusative: "Какие цветы выбрать (неодуш.) / Каких садовников пригласить (одуш.)?",
+      instrumental: "С какими цветами сочетать?",
+      prepositional: "О каких цветах речь?",
+    },
+  },
+  whose: {
+    singular: {
+      masculine: {
+        nominative: "Чей это дом?",
+        genitive: "Чьего дома не хватает?",
+        dative: "Чьему дому нужен ремонт?",
+        accusative: "Чей дом видно (неодуш.) / Чьего кота видно (одуш.)?",
+        instrumental: "С чьим домом сравнивать?",
+        prepositional: "О чьём доме речь?",
+      },
+      feminine: {
+        nominative: "Чья это книга?",
+        genitive: "Чьей книги не хватает?",
+        dative: "Чьей книге нужна обложка?",
+        accusative: "Чью книгу взять?",
+        instrumental: "С чьей книгой работать?",
+        prepositional: "О чьей книге речь?",
+      },
+      neuter: {
+        nominative: "Чьё это окно?",
+        genitive: "Чьего окна не хватает?",
+        dative: "Чьему окну нужна замена?",
+        accusative: "Чьё окно ремонтировать?",
+        instrumental: "С чьим окном сравнивать?",
+        prepositional: "О чьём окне речь?",
+      },
+    },
+    plural: {
+      nominative: "Чьи это вещи?",
+      genitive: "Чьих вещей не хватает?",
+      dative: "Чьим вещам нужен уход?",
+      accusative: "Чьи вещи убрать (неодуш.) / Чьих сотрудников наградить (одуш.)?",
+      instrumental: "С чьими вещами работать?",
+      prepositional: "О чьих вещах речь?",
+    },
+  },
+}
+
+// Examples for negative pronouns
+const negativePronounExamples = {
+  nobody: {
+    nominative: "Никто не пришёл.",
+    genitive: "Нет никого дома.",
+    dative: "Некому помочь.",
+    accusative: "Я никого не вижу.",
+    instrumental: "Это не сделано никем.",
+    prepositional: "Не о ком беспокоиться.",
+  },
+  nothing: {
+    nominative: "Ничто не вечно.",
+    genitive: "Нет ничего важнее.",
+    dative: "Нечему удивляться.",
+    accusative: "Я ничего не знаю.",
+    instrumental: "Этим ничего не изменишь.",
+    prepositional: "Не о чем говорить.",
+  },
+  no_one_to: {
+    nominative: "-",
+    genitive: "Некого винить.",
+    dative: "Не к кому обратиться.",
+    accusative: "Мне некого ждать.",
+    instrumental: "Не с кем посоветоваться.",
+    prepositional: "Не о ком думать.",
+  },
+  nothing_to: {
+    nominative: "-",
+    genitive: "Нечего бояться.",
+    dative: "Нечему учиться.",
+    accusative: "Мне нечего сказать.",
+    instrumental: "Нечем писать.",
+    prepositional: "Не о чем спорить.",
+  },
+}
+
+// Examples for reflexive pronouns
+const reflexivePronounExamples = {
+  oneself: {
+    genitive: "Думаю только о себе.",
+    dative: "Купил себе книгу.",
+    accusative: "Вижу себя в зеркале.",
+    instrumental: "Доволен собой.",
+    prepositional: "Думаю о себе.",
+  },
+  each_other: {
+    genitive: "Они думают друг о друге.",
+    dative: "Они пишут друг другу.",
+    accusative: "Они видят друг друга.",
+    instrumental: "Они довольны друг другом.",
+    prepositional: "Они говорят друг о друге.",
+  },
+}
+
 export default function PronounDeclensionTable() {
   const [pronounType, setPronounType] = useState<PronounType>("personal")
-  const [showExamples, setShowExamples] = useState(false)
+  const [showExamples, setShowExamples] = useState(true)
   const [hiddenEndings, setHiddenEndings] = useState<Record<string, boolean>>({})
 
   // For personal pronouns
@@ -953,6 +1368,16 @@ export default function PronounDeclensionTable() {
                     }
 
                     const key = `${caseType}_possessive`
+                    let example: string | undefined
+                    
+                    if (["his", "her", "their"].includes(possessiveType)) {
+                      example = possessivePronounExamples[possessiveType].all
+                    } else if (possessiveNumber === "singular") {
+                      example = possessivePronounExamples[possessiveType].singular[possessiveGender][caseType]
+                    } else {
+                      example = possessivePronounExamples[possessiveType].plural[caseType]
+                    }
+                    
                     return (
                       <TableRow key={caseType}>
                         <TableCell className="font-medium">
@@ -979,6 +1404,11 @@ export default function PronounDeclensionTable() {
                             <div className="font-medium">{pronoun as string}</div>
                           )}
                         </TableCell>
+                        {showExamples && (
+      <TableCell>
+        {!hiddenEndings[key] && <div className="text-sm">{example}</div>}
+      </TableCell>
+    )}
                       </TableRow>
                     )
                   })}
@@ -1094,6 +1524,14 @@ export default function PronounDeclensionTable() {
                 }
 
                 const key = `${caseType}_demonstrative`
+                let example: string
+                
+                if (demonstrativeNumber === "singular") {
+                  example = demonstrativePronounExamples[demonstrativeType].singular[demonstrativeGender][caseType]
+                } else {
+                  example = demonstrativePronounExamples[demonstrativeType].plural[caseType]
+                }
+                
                 return (
                   <TableRow key={caseType}>
                     <TableCell className="font-medium">
@@ -1120,6 +1558,11 @@ export default function PronounDeclensionTable() {
                         <div className="font-medium">{pronoun as string}</div>
                       )}
                     </TableCell>
+                    {showExamples && (
+      <TableCell>
+        {!hiddenEndings[key] && <div className="text-sm">{example}</div>}
+      </TableCell>
+    )}
                   </TableRow>
                 )
               })}
@@ -1253,6 +1696,16 @@ export default function PronounDeclensionTable() {
                 }
 
                 const key = `${caseType}_interrogative`
+                let example: string
+                
+                if (interrogativeType === "who" || interrogativeType === "what") {
+                  example = interrogativePronounExamples[interrogativeType][caseType as keyof typeof interrogativePronounExamples.who]
+                } else if (interrogativeNumber === "singular") {
+                  example = interrogativePronounExamples[interrogativeType].singular[interrogativeGender][caseType]
+                } else {
+                  example = interrogativePronounExamples[interrogativeType].plural[caseType]
+                }
+                
                 return (
                   <TableRow key={caseType}>
                     <TableCell className="font-medium">
@@ -1281,6 +1734,11 @@ export default function PronounDeclensionTable() {
                         <div className="font-medium">{pronoun as string}</div>
                       )}
                     </TableCell>
+                    {showExamples && (
+      <TableCell>
+        {!hiddenEndings[key] && <div className="text-sm">{example}</div>}
+      </TableCell>
+    )}
                   </TableRow>
                 )
               })}
@@ -1330,7 +1788,8 @@ export default function PronounDeclensionTable() {
               {cases.map((caseType) => {
                 const pronoun = negativePronouns[negativeType][caseType as keyof typeof negativePronouns.nobody]
                 const key = `${caseType}_negative`
-
+                const example = negativePronounExamples[negativeType][caseType as keyof typeof negativePronounExamples.nobody]
+                
                 return (
                   <TableRow key={caseType}>
                     <TableCell className="font-medium">
@@ -1346,6 +1805,11 @@ export default function PronounDeclensionTable() {
                         <div className="font-medium">{pronoun}</div>
                       )}
                     </TableCell>
+                    {showExamples && (
+      <TableCell>
+        {!hiddenEndings[key] && <div className="text-sm">{example}</div>}
+      </TableCell>
+    )}
                   </TableRow>
                 )
               })}
@@ -1386,7 +1850,8 @@ export default function PronounDeclensionTable() {
               {cases.map((caseType) => {
                 const pronoun = reflexivePronouns[reflexiveType][caseType as keyof typeof reflexivePronouns.oneself]
                 const key = `${caseType}_reflexive`
-
+                const example = reflexivePronounExamples[reflexiveType][caseType as keyof typeof reflexivePronounExamples.oneself]
+                
                 return (
                   <TableRow key={caseType}>
                     <TableCell className="font-medium">
@@ -1402,6 +1867,11 @@ export default function PronounDeclensionTable() {
                         <div className="font-medium">{pronoun}</div>
                       )}
                     </TableCell>
+                    {showExamples && (
+      <TableCell>
+        {!hiddenEndings[key] && <div className="text-sm">{example}</div>}
+      </TableCell>
+    )}
                   </TableRow>
                 )
               })}
