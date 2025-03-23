@@ -943,6 +943,10 @@ const ordinalExamples = {
       neuter: {
         nominative: "Десятое задание выполнено.",
         genitive: "Часть десятого задания сложная.",
+      },
+      neuter: {
+        nominative: "Десятое задание выполнено.",
+        genitive: "Часть десятого задания сложная.",
         dative: "Приступаю к десятому заданию.",
         accusative: "Я выполнил десятое задание.",
         instrumental: "Я справился с десятым заданием.",
@@ -1554,7 +1558,9 @@ export default function NumberDeclensionTable() {
                               </div>
                             </>
                           ) : (
-                            <div className="font-medium text-lg">{number}</div>
+                            <div className="font-medium text-lg">
+                              {typeof number === "string" ? number : "Complex Object"}
+                            </div>
                           )}
                         </TableCell>
                         {showExamples && (
@@ -1831,7 +1837,9 @@ export default function NumberDeclensionTable() {
                               </div>
                             </>
                           ) : (
-                            <div className="font-medium text-lg">{number}</div>
+                            <div className="font-medium text-lg">
+                              {typeof number === "string" ? number : "Complex Object"}
+                            </div>
                           )}
                         </TableCell>
                         {showExamples && (
@@ -2133,7 +2141,9 @@ export default function NumberDeclensionTable() {
                               </div>
                             </>
                           ) : (
-                            <div className="font-medium text-lg">{number}</div>
+                            <div className="font-medium text-lg">
+                              {typeof number === "string" ? number : "Complex Object"}
+                            </div>
                           )}
                         </TableCell>
                         {showExamples && (
