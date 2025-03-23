@@ -18,7 +18,7 @@ interface AccusativeForm {
 // Define types for number categories
 type NumberType = "cardinal" | "ordinal" | "collective"
 type CardinalType = "one" | "two_to_four" | "five_to_twenty" | "tens" | "hundreds" | "compound"
-type OrdinalType = "first" | "second" | "third" | "other"
+type OrdinalType = "first" | "second" | "third" | "fifth" | "tenth"
 type CollectiveType =
   | "oba"
   | "obe"
@@ -260,8 +260,9 @@ const cardinalNumbers = {
   },
 }
 
-// Russian ordinal numbers data
+// Russian ordinal numbers data - restructured to be clearer
 const ordinalNumbers = {
+  // First ordinal number (1st)
   first: {
     masculine: {
       nominative: "первый",
@@ -302,6 +303,7 @@ const ordinalNumbers = {
       prepositional: "первых",
     },
   },
+  // Second ordinal number (2nd)
   second: {
     masculine: {
       nominative: "второй",
@@ -342,6 +344,7 @@ const ordinalNumbers = {
       prepositional: "вторых",
     },
   },
+  // Third ordinal number (3rd)
   third: {
     masculine: {
       nominative: "третий",
@@ -382,86 +385,86 @@ const ordinalNumbers = {
       prepositional: "третьих",
     },
   },
-  other: {
-    fifth: {
-      masculine: {
-        nominative: "пятый",
-        genitive: "пятого",
-        dative: "пятому",
-        accusative: {
-          animate: "пятого",
-          inanimate: "пятый",
-        },
-        instrumental: "пятым",
-        prepositional: "пятом",
+  // Fifth ordinal number (5th)
+  fifth: {
+    masculine: {
+      nominative: "пятый",
+      genitive: "пятого",
+      dative: "пятому",
+      accusative: {
+        animate: "пятого",
+        inanimate: "пятый",
       },
-      feminine: {
-        nominative: "пятая",
-        genitive: "пятой",
-        dative: "пятой",
-        accusative: "пятую",
-        instrumental: "пятой",
-        prepositional: "пятой",
-      },
-      neuter: {
-        nominative: "пятое",
-        genitive: "пятого",
-        dative: "пятому",
-        accusative: "пятое",
-        instrumental: "пятым",
-        prepositional: "пятом",
-      },
-      plural: {
-        nominative: "пятые",
-        genitive: "пятых",
-        dative: "пятым",
-        accusative: {
-          animate: "пятых",
-          inanimate: "пятые",
-        },
-        instrumental: "пятыми",
-        prepositional: "пятых",
-      },
+      instrumental: "пятым",
+      prepositional: "пятом",
     },
-    tenth: {
-      masculine: {
-        nominative: "десятый",
-        genitive: "десятого",
-        dative: "десятому",
-        accusative: {
-          animate: "десятого",
-          inanimate: "десятый",
-        },
-        instrumental: "десятым",
-        prepositional: "десятом",
+    feminine: {
+      nominative: "пятая",
+      genitive: "пятой",
+      dative: "пятой",
+      accusative: "пятую",
+      instrumental: "пятой",
+      prepositional: "пятой",
+    },
+    neuter: {
+      nominative: "пятое",
+      genitive: "пятого",
+      dative: "пятому",
+      accusative: "пятое",
+      instrumental: "пятым",
+      prepositional: "пятом",
+    },
+    plural: {
+      nominative: "пятые",
+      genitive: "пятых",
+      dative: "пятым",
+      accusative: {
+        animate: "пятых",
+        inanimate: "пятые",
       },
-      feminine: {
-        nominative: "десятая",
-        genitive: "десятой",
-        dative: "десятой",
-        accusative: "десятую",
-        instrumental: "десятой",
-        prepositional: "десятой",
+      instrumental: "пятыми",
+      prepositional: "пятых",
+    },
+  },
+  // Tenth ordinal number (10th)
+  tenth: {
+    masculine: {
+      nominative: "десятый",
+      genitive: "десятого",
+      dative: "десятому",
+      accusative: {
+        animate: "десятого",
+        inanimate: "десятый",
       },
-      neuter: {
-        nominative: "десятое",
-        genitive: "десятого",
-        dative: "десятому",
-        accusative: "десятое",
-        instrumental: "десятым",
-        prepositional: "десятом",
+      instrumental: "десятым",
+      prepositional: "десятом",
+    },
+    feminine: {
+      nominative: "десятая",
+      genitive: "десятой",
+      dative: "десятой",
+      accusative: "десятую",
+      instrumental: "десятой",
+      prepositional: "десятой",
+    },
+    neuter: {
+      nominative: "десятое",
+      genitive: "десятого",
+      dative: "десятому",
+      accusative: "десятое",
+      instrumental: "десятым",
+      prepositional: "десятом",
+    },
+    plural: {
+      nominative: "десятые",
+      genitive: "десятых",
+      dative: "десятым",
+      accusative: {
+        animate: "десятых",
+        inanimate: "десятые",
       },
-      plural: {
-        nominative: "десятые",
-        genitive: "десятых",
-        dative: "десятым",
-        accusative: {
-          animate: "десятых",
-          inanimate: "десятые",
-        },
-        instrumental: "десятыми",
-        prepositional: "десятых",
-      },
+      instrumental: "десятыми",
+      prepositional: "десятых",
     },
   },
 }
@@ -757,7 +760,7 @@ const cardinalExamples = {
   },
 }
 
-// Examples for ordinal numbers
+// Examples for ordinal numbers - restructured to match the new ordinalNumbers structure
 const ordinalExamples = {
   first: {
     masculine: {
@@ -879,90 +882,84 @@ const ordinalExamples = {
       prepositional: "Я думаю о третьих студентах.",
     },
   },
-  other: {
-    fifth: {
-      masculine: {
-        nominative: "Пятый студент пришёл.",
-        genitive: "У пятого студента есть книга.",
-        dative: "Я дал книгу пятому студенту.",
-        accusative: {
-          animate: "Я вижу пятого студента.",
-          inanimate: "Я вижу пятый дом.",
-        },
-        instrumental: "Я говорю с пятым студентом.",
-        prepositional: "Я думаю о пятом студенте.",
+  fifth: {
+    masculine: {
+      nominative: "Пятый студент пришёл.",
+      genitive: "У пятого студента есть книга.",
+      dative: "Я дал книгу пятому студенту.",
+      accusative: {
+        animate: "Я вижу пятого студента.",
+        inanimate: "Я вижу пятый дом.",
       },
-      feminine: {
-        nominative: "Пятая студентка пришла.",
-        genitive: "У пятой студентки есть книга.",
-        dative: "Я дал книгу пятой студентке.",
-        accusative: "Я вижу пятую студентку.",
-        instrumental: "Я говорю с пятой студенткой.",
-        prepositional: "Я думаю о пятой студентке.",
-      },
-      neuter: {
-        nominative: "Пятое задание выполнено.",
-        genitive: "Часть пятого задания сложная.",
-        dative: "Приступаю к пятому заданию.",
-        accusative: "Я выполнил пятое задание.",
-        instrumental: "Я справился с пятым заданием.",
-        prepositional: "Я думаю о пятом задании.",
-      },
-      plural: {
-        nominative: "Пятые студенты пришли.",
-        genitive: "У пятых студентов есть книги.",
-        dative: "Я дал книги пятым студентам.",
-        accusative: {
-          animate: "Я вижу пятых студентов.",
-          inanimate: "Я вижу пятые дома.",
-        },
-        instrumental: "Я говорю с пятыми студентами.",
-        prepositional: "Я думаю о пятых студентах.",
-      },
+      instrumental: "Я говорю с пятым студентом.",
+      prepositional: "Я думаю о пятом студенте.",
     },
-    tenth: {
-      masculine: {
-        nominative: "Десятый студент пришёл.",
-        genitive: "У десятого студента есть книга.",
-        dative: "Я дал книгу десятому студенту.",
-        accusative: {
-          animate: "Я вижу десятого студента.",
-          inanimate: "Я вижу десятый дом.",
-        },
-        instrumental: "Я говорю с десятым студентом.",
-        prepositional: "Я думаю о десятом студенте.",
+    feminine: {
+      nominative: "Пятая студентка пришла.",
+      genitive: "У пятой студентки есть книга.",
+      dative: "Я дал книгу пятой студентке.",
+      accusative: "Я вижу пятую студентку.",
+      instrumental: "Я говорю с пятой студенткой.",
+      prepositional: "Я думаю о пятой студентке.",
+    },
+    neuter: {
+      nominative: "Пятое задание выполнено.",
+      genitive: "Часть пятого задания сложная.",
+      dative: "Приступаю к пятому заданию.",
+      accusative: "Я выполнил пятое задание.",
+      instrumental: "Я справился с пятым заданием.",
+      prepositional: "Я думаю о пятом задании.",
+    },
+    plural: {
+      nominative: "Пятые студенты пришли.",
+      genitive: "У пятых студентов есть книги.",
+      dative: "Я дал книги пятым студентам.",
+      accusative: {
+        animate: "Я вижу пятых студентов.",
+        inanimate: "Я вижу пятые дома.",
       },
-      feminine: {
-        nominative: "Десятая студентка пришла.",
-        genitive: "У десятой студентки есть книга.",
-        dative: "Я дал книгу десятой студентке.",
-        accusative: "Я вижу десятую студентку.",
-        instrumental: "Я говорю с десятой студенткой.",
-        prepositional: "Я думаю о десятой студентке.",
+      instrumental: "Я говорю с пятыми студентами.",
+      prepositional: "Я думаю о пятых студентах.",
+    },
+  },
+  tenth: {
+    masculine: {
+      nominative: "Десятый студент пришёл.",
+      genitive: "У десятого студента есть книга.",
+      dative: "Я дал книгу десятому студенту.",
+      accusative: {
+        animate: "Я вижу десятого студента.",
+        inanimate: "Я вижу десятый дом.",
       },
-      neuter: {
-        nominative: "Десятое задание выполнено.",
-        genitive: "Часть десятого задания сложная.",
+      instrumental: "Я говорю с десятым студентом.",
+      prepositional: "Я думаю о десятом студенте.",
+    },
+    feminine: {
+      nominative: "Десятая студентка пришла.",
+      genitive: "У десятой студентки есть книга.",
+      dative: "Я дал книгу десятой студентке.",
+      accusative: "Я вижу десятую студентку.",
+      instrumental: "Я говорю с десятой студенткой.",
+      prepositional: "Я думаю о десятой студентке.",
+    },
+    neuter: {
+      nominative: "Десятое задание выполнено.",
+      genitive: "Часть десятого задания сложная.",
+      dative: "Приступаю к десятому заданию.",
+      accusative: "Я выполнил десятое задание.",
+      instrumental: "Я справился с десятым заданием.",
+      prepositional: "Я думаю о десятом задании.",
+    },
+    plural: {
+      nominative: "Десятые студенты пришли.",
+      genitive: "У десятых студентов есть книги.",
+      dative: "Я дал книги десятым студентам.",
+      accusative: {
+        animate: "Я вижу десятых студентов.",
+        inanimate: "Я вижу десятые дома.",
       },
-      neuter: {
-        nominative: "Десятое задание выполнено.",
-        genitive: "Часть десятого задания сложная.",
-        dative: "Приступаю к десятому заданию.",
-        accusative: "Я выполнил десятое задание.",
-        instrumental: "Я справился с десятым заданием.",
-        prepositional: "Я думаю о десятом задании.",
-      },
-      plural: {
-        nominative: "Десятые студенты пришли.",
-        genitive: "У десятых студентов есть книги.",
-        dative: "Я дал книги десятым студентам.",
-        accusative: {
-          animate: "Я вижу десятых студентов.",
-          inanimate: "Я вижу десятые дома.",
-        },
-        instrumental: "Я говорю с десятыми студентами.",
-        prepositional: "Я думаю о десятых студентах.",
-      },
+      instrumental: "Я говорю с десятыми студентами.",
+      prepositional: "Я думаю о десятых студентах.",
     },
   },
 }
@@ -1127,7 +1124,6 @@ export default function NumberDeclensionTable() {
   const [ordinalType, setOrdinalType] = useState<OrdinalType>("first")
   const [ordinalGender, setOrdinalGender] = useState<Gender>("masculine")
   const [ordinalNumber, setOrdinalNumber] = useState<string>("singular")
-  const [ordinalSpecificNumber, setOrdinalSpecificNumber] = useState<string>("fifth")
 
   // For collective numbers
   const [collectiveType, setCollectiveType] = useState<CollectiveType>("dvoe")
@@ -1624,44 +1620,22 @@ export default function NumberDeclensionTable() {
                   Третий (3rd)
                 </Button>
                 <Button
-                  variant={ordinalType === "other" ? "default" : "outline"}
-                  onClick={() => {
-                    setOrdinalType("other")
-                    setOrdinalSpecificNumber("fifth")
-                  }}
+                  variant={ordinalType === "fifth" ? "default" : "outline"}
+                  onClick={() => setOrdinalType("fifth")}
                   size="sm"
                 >
-                  Other
+                  Пятый (5th)
+                </Button>
+                <Button
+                  variant={ordinalType === "tenth" ? "default" : "outline"}
+                  onClick={() => setOrdinalType("tenth")}
+                  size="sm"
+                >
+                  Десятый (10th)
                 </Button>
               </div>
             </CardContent>
           </Card>
-
-          {ordinalType === "other" && (
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg">Number</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-2">
-                  <Button
-                    variant={ordinalSpecificNumber === "fifth" ? "default" : "outline"}
-                    onClick={() => setOrdinalSpecificNumber("fifth")}
-                    size="sm"
-                  >
-                    Пятый (5th)
-                  </Button>
-                  <Button
-                    variant={ordinalSpecificNumber === "tenth" ? "default" : "outline"}
-                    onClick={() => setOrdinalSpecificNumber("tenth")}
-                    size="sm"
-                  >
-                    Десятый (10th)
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
 
           <Card>
             <CardHeader className="pb-2">
@@ -1720,7 +1694,7 @@ export default function NumberDeclensionTable() {
                   ? "Второй (2nd)"
                   : ordinalType === "third"
                     ? "Третий (3rd)"
-                    : ordinalSpecificNumber === "fifth"
+                    : ordinalType === "fifth"
                       ? "Пятый (5th)"
                       : "Десятый (10th)"}{" "}
               {ordinalNumber === "plural"
@@ -1749,60 +1723,23 @@ export default function NumberDeclensionTable() {
                     let example: string | AccusativeForm | undefined = ""
 
                     try {
-                      if (ordinalType === "other") {
-                        if (ordinalNumber === "plural") {
-                          if (caseType === "accusative") {
-                            number = ordinalNumbers.other[ordinalSpecificNumber as "fifth" | "tenth"].plural
-                              .accusative as AccusativeForm
-                          } else {
-                            number = ordinalNumbers.other[ordinalSpecificNumber as "fifth" | "tenth"].plural[
-                              caseType
-                            ] as string
-                          }
+                      if (ordinalNumber === "plural") {
+                        if (caseType === "accusative") {
+                          number = ordinalNumbers[ordinalType].plural.accusative as AccusativeForm
                         } else {
-                          if (caseType === "accusative" && ordinalGender === "masculine") {
-                            number = ordinalNumbers.other[ordinalSpecificNumber as "fifth" | "tenth"][ordinalGender]
-                              .accusative as AccusativeForm
-                          } else {
-                            number = ordinalNumbers.other[ordinalSpecificNumber as "fifth" | "tenth"][ordinalGender][
-                              caseType
-                            ] as string
-                          }
-                        }
-
-                        // Safely access example data
-                        if (
-                          ordinalExamples.other &&
-                          ordinalExamples.other[ordinalSpecificNumber as "fifth" | "tenth"] &&
-                          ordinalExamples.other[ordinalSpecificNumber as "fifth" | "tenth"][ordinalGender]
-                        ) {
-                          example =
-                            ordinalExamples.other[ordinalSpecificNumber as "fifth" | "tenth"][ordinalGender][caseType]
-                        } else if (
-                          ordinalExamples[ordinalSpecificNumber as "fifth"] &&
-                          ordinalExamples[ordinalSpecificNumber as "fifth"][ordinalGender]
-                        ) {
-                          example = ordinalExamples[ordinalSpecificNumber as "fifth"][ordinalGender][caseType]
+                          number = ordinalNumbers[ordinalType].plural[caseType] as string
                         }
                       } else {
-                        if (ordinalNumber === "plural") {
-                          if (caseType === "accusative") {
-                            number = ordinalNumbers[ordinalType].plural.accusative as AccusativeForm
-                          } else {
-                            number = ordinalNumbers[ordinalType].plural[caseType] as string
-                          }
+                        if (caseType === "accusative" && ordinalGender === "masculine") {
+                          number = ordinalNumbers[ordinalType][ordinalGender].accusative as AccusativeForm
                         } else {
-                          if (caseType === "accusative" && ordinalGender === "masculine") {
-                            number = ordinalNumbers[ordinalType][ordinalGender].accusative as AccusativeForm
-                          } else {
-                            number = ordinalNumbers[ordinalType][ordinalGender][caseType] as string
-                          }
+                          number = ordinalNumbers[ordinalType][ordinalGender][caseType] as string
                         }
+                      }
 
-                        // Safely access example data
-                        if (ordinalExamples[ordinalType] && ordinalExamples[ordinalType][ordinalGender]) {
-                          example = ordinalExamples[ordinalType][ordinalGender][caseType]
-                        }
+                      // Safely access example data
+                      if (ordinalExamples[ordinalType] && ordinalExamples[ordinalType][ordinalGender]) {
+                        example = ordinalExamples[ordinalType][ordinalGender][caseType]
                       }
                     } catch (error) {
                       console.error("Error accessing ordinal data:", error)
@@ -1869,9 +1806,6 @@ export default function NumberDeclensionTable() {
       </div>
     )
   }
-
-  // Enhance the collective number table with more options
-  // Replace the renderCollectiveNumberTable function with this improved version:
 
   // Render the collective number table
   const renderCollectiveNumberTable = () => {
