@@ -1563,14 +1563,17 @@ export default function NumberDeclensionTable() {
                           <TableCell>
                             {!hiddenEndings[key] && (
                               <div className="text-sm">
-                                {typeof example === "object" && example?.animate && example?.inanimate ? (
+                                {typeof example === "object" &&
+                                example &&
+                                "animate" in example &&
+                                "inanimate" in example ? (
                                   <>
                                     <div>Inanimate: {example.inanimate}</div>
                                     <div>Animate: {example.animate}</div>
                                   </>
-                                ) : (
+                                ) : typeof example === "string" ? (
                                   example
-                                )}
+                                ) : null}
                               </div>
                             )}
                           </TableCell>
@@ -1783,14 +1786,17 @@ export default function NumberDeclensionTable() {
                           <TableCell>
                             {!hiddenEndings[key] && (
                               <div className="text-sm">
-                                {typeof example === "object" && example?.animate && example?.inanimate ? (
+                                {typeof example === "object" &&
+                                example &&
+                                "animate" in example &&
+                                "inanimate" in example ? (
                                   <>
                                     <div>Inanimate: {example.inanimate}</div>
                                     <div>Animate: {example.animate}</div>
                                   </>
-                                ) : (
+                                ) : typeof example === "string" ? (
                                   example
-                                )}
+                                ) : null}
                               </div>
                             )}
                           </TableCell>
@@ -2084,14 +2090,17 @@ export default function NumberDeclensionTable() {
                           <TableCell>
                             {!hiddenEndings[key] && (
                               <div className="text-sm">
-                                {typeof example === "object" && example?.animate && example?.inanimate ? (
+                                {typeof example === "object" &&
+                                example &&
+                                "animate" in example &&
+                                "inanimate" in example ? (
                                   <>
                                     <div>Inanimate: {example.inanimate}</div>
                                     <div>Animate: {example.animate}</div>
                                   </>
-                                ) : (
+                                ) : typeof example === "string" ? (
                                   example
-                                )}
+                                ) : null}
                               </div>
                             )}
                           </TableCell>
