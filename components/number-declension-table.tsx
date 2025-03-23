@@ -1127,6 +1127,7 @@ export default function NumberDeclensionTable() {
 
   // For collective numbers
   const [collectiveType, setCollectiveType] = useState<CollectiveType>("dvoe")
+  const [collectiveGender, setCollectiveGender] = useState<Gender>("masculine")
 
   const cases: Case[] = ["nominative", "genitive", "dative", "accusative", "instrumental", "prepositional"]
 
@@ -1800,7 +1801,7 @@ export default function NumberDeclensionTable() {
                     } catch (error) {
                       console.error("Error accessing ordinal data:", error)
                       number = "—"
-                      example = "��"
+                      example = "—"
                     }
 
                     const key = `${caseType}_ordinal`
@@ -1866,9 +1867,6 @@ export default function NumberDeclensionTable() {
 
   // Render the collective number table
   const renderCollectiveNumberTable = () => {
-    // Add state for gender selection for oba/obe
-    const [collectiveGender, setCollectiveGender] = useState<Gender>("masculine")
-
     return (
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -1994,6 +1992,40 @@ export default function NumberDeclensionTable() {
             </Card>
           )}
 
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg">Usage Notes</CardTitle>
+            </CardHeader>
+            <CardContent className="text-sm">
+              <p>Collective numerals are used with:</p>
+              <ul className="list-disc pl-5 space-y-1 mt-2">
+                <li>
+                  Male persons: <span className="font-medium">двое мужчин</span> (two men)
+                </li>
+                <li>
+                  Children: <span className="font-medium">трое детей</span> (three children)
+                </li>
+                <li>
+                  Plural-only nouns: <span className="font-medium">двое суток</span> (two days)
+                </li>
+                <li>
+                  Paired items: <span className="font-medium">двое ножниц</span> (two pairs of scissors)
+                </li>
+              </ul>
+              <p className="mt-2">
+                <strong>Оба/Обе</strong> (both) are special collective numerals:
+              </p>
+              <ul className="list-disc pl-5 space-y-1 mt-1">
+                <li>
+                  <strong>Оба</strong> is used with masculine and neuter nouns
+                </li>
+                <li>
+                  <strong>Обе</strong> is used with feminine nouns
+                </li>
+                <li>Unlike other collective numerals, they can be used with nouns of all genders</li>
+              </ul>
+            </CardContent>
+          </Card>
         </div>
 
         <Card>
@@ -2176,6 +2208,43 @@ export default function NumberDeclensionTable() {
           </div>
         </div>
 
+        <Card className="mb-4">
+          <CardHeader className="pb-2">
+            <CardTitle className="flex items-center">
+              <Info className="h-5 w-5 mr-2" />
+              About Russian Numbers
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-sm space-y-2">
+              <p>
+                <strong>Cardinal numbers</strong> (количественные числительные) indicate quantity (один, два, три).
+              </p>
+              <p>
+                <strong>Ordinal numbers</strong> (порядковые числительные) indicate order or sequence (первый, второй,
+                третий).
+              </p>
+              <p>
+                <strong>Collective numbers</strong> (собирательные числительные) are used with certain groups of people
+                or objects (двое, трое, четверо). They are typically used with:
+              </p>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Groups of male persons (двое мужчин - two men)</li>
+                <li>Children and young animals (трое детей - three children)</li>
+                <li>Paired items (двое ножниц - two pairs of scissors)</li>
+                <li>Some plural-only nouns (двое суток - two days)</li>
+              </ul>
+              <p>
+                Russian numbers decline based on case, and some also change based on gender. The number 1 (один) and all
+                ordinal numbers behave like adjectives, agreeing with the noun they modify in gender, number, and case.
+              </p>
+              <p>
+                Numbers 2-4 have special rules: they require the noun to be in the genitive singular, while 5+ require
+                the genitive plural.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Keep the Tabs and TabsContent components for content switching */}
         <Tabs value={numberType} onValueChange={(value) => setNumberType(value as NumberType)}>
