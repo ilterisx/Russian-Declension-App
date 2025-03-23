@@ -4,11 +4,12 @@ import { useState, useEffect } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Github } from 'lucide-react'
+import { Github } from "lucide-react"
 import NounDeclensionTable from "@/components/noun-declension-table"
 import AdjectiveDeclensionTable from "@/components/adjective-declension-table"
 import PronounDeclensionTable from "@/components/pronoun-declension-table"
 import PrepositionTable from "@/components/preposition-table"
+import NumberDeclensionTable from "@/components/number-declension-table"
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("nouns")
@@ -19,15 +20,15 @@ export default function Home() {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 640)
     }
-    
+
     // Initial check
     checkIfMobile()
-    
+
     // Add event listener for window resize
-    window.addEventListener('resize', checkIfMobile)
-    
+    window.addEventListener("resize", checkIfMobile)
+
     // Clean up
-    return () => window.removeEventListener('resize', checkIfMobile)
+    return () => window.removeEventListener("resize", checkIfMobile)
   }, [])
 
   const handleTabChange = (value: string) => {
@@ -38,7 +39,8 @@ export default function Home() {
     { value: "nouns", label: "Noun Endings" },
     { value: "adjectives", label: "Adjective Endings" },
     { value: "pronouns", label: "Pronouns" },
-    { value: "prepositions", label: "Prepositions" }
+    { value: "prepositions", label: "Prepositions" },
+    { value: "numbers", label: "Numbers" },
   ]
 
   return (
@@ -47,7 +49,10 @@ export default function Home() {
         <header className="mb-8 text-center">
           <h1 className="text-3xl md:text-4xl font-bold mb-2 text-foreground">Russian Declensions</h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            last update: 23/03/2025, contact: <a href="mailto:ilterisch@yandex.ru" className="underline hover:text-primary transition-colors">ilterisch@yandex.ru</a>
+            last update: 23/03/2025, contact:{" "}
+            <a href="mailto:ilterisch@yandex.ru" className="underline hover:text-primary transition-colors">
+              ilterisch@yandex.ru
+            </a>
           </p>
         </header>
 
@@ -60,7 +65,7 @@ export default function Home() {
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
-                  {tabOptions.map(option => (
+                  {tabOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
                     </SelectItem>
@@ -75,7 +80,7 @@ export default function Home() {
             {!isMobile && (
               <div className="relative mb-6 overflow-hidden rounded-lg border border-border">
                 <TabsList className="w-full h-auto flex bg-card p-1">
-                  {tabOptions.map(option => (
+                  {tabOptions.map((option) => (
                     <TabsTrigger
                       key={option.value}
                       value={option.value}
@@ -144,6 +149,20 @@ export default function Home() {
                 </CardContent>
               </Card>
             </TabsContent>
+
+            <TabsContent value="numbers" className="mt-0 focus-visible:outline-none focus-visible:ring-0">
+              <Card className="border border-border overflow-hidden">
+                <CardHeader className="bg-card border-b border-border">
+                  <CardTitle className="text-foreground">Russian Number Declensions</CardTitle>
+                  <CardDescription className="text-muted-foreground">
+                    Reference for cardinal, ordinal, and collective numbers across all 6 cases
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <NumberDeclensionTable />
+                </CardContent>
+              </Card>
+            </TabsContent>
           </Tabs>
         </div>
 
@@ -163,3 +182,4 @@ export default function Home() {
     </main>
   )
 }
+
