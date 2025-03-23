@@ -2021,14 +2021,22 @@ export default function NumberDeclensionTable() {
                     try {
                       if (collectiveType === "oba" || collectiveType === "obe") {
                         if (collectiveType === "oba") {
+                          // Check if the gender is valid for "oba" (only masculine and neuter are valid)
+                          const validGender = collectiveGender === "feminine" ? "masculine" : collectiveGender
+
                           if (caseType === "accusative") {
-                            number = collectiveNumbers.oba[collectiveGender].accusative as AccusativeForm
+                            number = collectiveNumbers.oba[validGender as "masculine" | "neuter"]
+                              .accusative as AccusativeForm
                           } else {
-                            number = collectiveNumbers.oba[collectiveGender][caseType] as string
+                            number = collectiveNumbers.oba[validGender as "masculine" | "neuter"][caseType] as string
                           }
-                          example = collectiveExamples.oba[collectiveGender][caseType]
+
+                          // Safely access example data
+                          if (collectiveExamples.oba[validGender as "masculine" | "neuter"]) {
+                            example = collectiveExamples.oba[validGender as "masculine" | "neuter"][caseType]
+                          }
                         } else {
-                          // obe
+                          // For "obe", we only have feminine
                           if (caseType === "accusative") {
                             number = collectiveNumbers.obe.feminine.accusative
                           } else {
@@ -2037,6 +2045,7 @@ export default function NumberDeclensionTable() {
                           example = collectiveExamples.obe.feminine[caseType]
                         }
                       } else {
+                        // For other collective numbers
                         if (caseType === "accusative") {
                           number = collectiveNumbers[collectiveType].accusative as AccusativeForm
                         } else {
