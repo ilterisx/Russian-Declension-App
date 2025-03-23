@@ -13,8 +13,43 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Russian Declension Memorization",
-  description: "Memorize Russian Declensions",
+  title: "Russian Declension Reference",
+  description:
+    "A comprehensive reference for Russian noun, adjective, pronoun, preposition, and number declensions.",
+  keywords: [
+    "Russian",
+    "declension",
+    "reference",
+    "noun declension",
+    "adjective declension",
+    "pronoun declension",
+    "preposition declension",
+    "number declension",
+    "Russian Declensions",
+    "Study Russian Declensions",
+    "Russian Declension Test"
+  ],
+  icons: {
+    icon: "/favicon.ico", 
+  },
+  openGraph: {
+    title: "Russian Declension Reference",
+    description:
+      "A comprehensive reference for Russian declensions covering various word types.",
+    url: "https://russiandeclensions.vercel.app",
+    siteName: "Russian Declension Reference",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Russian Declension Reference",
+    description:
+      "A comprehensive reference for Russian declensions covering various word types.",
+  },
+  alternates: {
+    canonical: "https://russiandeclensions.vercel.app/", 
+  },
 };
 
 export default function RootLayout({
@@ -24,6 +59,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Structured Data with JSON-LD */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Russian Declension Reference",
+              url: "https://russiandeclensions.vercel.app/", 
+            }),
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
